@@ -6,6 +6,11 @@
 ## DEPENDENCIES: grub
 ## PURPOSE:      GRUB bootloader configuration.
 
+## SET LUKS_UUID!!!
+
+## AFTER EACH CHANGE RE-GENERATE BOOTLOADER WITH:
+## $(grub-mkconfig -o /boot/grub/grub.cfg)
+
 #########################
 ##  GRUB MENU ENTRIES  ##
 #########################
