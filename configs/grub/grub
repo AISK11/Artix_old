@@ -1,8 +1,8 @@
 ## LOCATION:     /etc/default/grub
 ## AUTHOR:       AISK11
-## VERSION:      1.0.0
+## VERSION:      1.0.1
 ## CREATED:      2022-03-19
-## UPDATED:      2022-03-19
+## UPDATED:      2022-03-26
 ## DEPENDENCIES: grub
 ## PURPOSE:      GRUB bootloader configuration.
 
@@ -32,7 +32,7 @@ GRUB_FORCE_HIDDEN_MENU="true"
 ##     ENCRYPTION      ##
 #########################
 ## Decrypt encrypted root partition.
-GRUB_CMDLINE_LINUX="cryptdevice=UUID=<LUKS_UUID>:luks root=/dev/mapper/luks"
+GRUB_CMDLINE_LINUX="cryptdevice=UUID=<LUKS_UUID>:luks-root root=/dev/mapper/luks-root"
 ## Enable booting from LUKS (/boot partition).
 #GRUB_ENABLE_CRYPTODISK=y
 ## Preload both GPT and MBR modules,
