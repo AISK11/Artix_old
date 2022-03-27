@@ -532,7 +532,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \end{Verbatim}
     \item \textbf{Remove auto-generated initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{rm} \textcolor{file}{init*}
+\textcolor{root}{(chroot) root#} \textcolor{command}{rm} \textcolor{file}{/boot/init*}
 \end{Verbatim}
     \item \textbf{Move microcode to correct directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -549,12 +549,12 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
     \begin{itemize}
         \item \textbf{Kernel version in boot:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{file} <\textcolor{file}{/boot/linuces/artix/vmlinux-linux}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{file} <\textcolor{file}{/boot/linuces/artix/vmlinuz-linux}>
 \end{Verbatim}
         \item \textbf{Available kernels:}
 \newline \textbf{\textcolor{dir}{/lib/modules/}}
     \end{itemize}
-    \item \textbf{Generate initramfs: @WIP}
+    \item \textbf{Generate initramfs: @MEH}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{dracut} -f <\textcolor{file}{/boot/linuces/artix/initramfs-linux.img}>
 --kver 5.16.16-artix1-1 -H
@@ -592,7 +592,7 @@ rd.luks.uuid=<UUID_/dev/sda2>
     \item \textbf{Copy rEFInd config file:}
     \begin{itemize}
         \item \textbf{Github:}
-\newline \url{}
+\newline \url{https://github.com/AISK11/Artix/blob/main/configs/refind/refind.conf}
         \item \textbf{Default rEFInd file:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind.conf-sample}
@@ -626,6 +626,12 @@ menuentry "Artix" \{
 \textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} <\textcolor{dir}{/boot/refind/themes/}>
 \end{Verbatim}
         \item \textbf{Copy theme to themes directory:}
+\newline \url{https://github.com/AISK11/Artix/tree/main/configs/refind/themes/refind-theme}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{git} clone https://www.github.com/aisk11/artix
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r <\textcolor{dir}{./artix/configs/refind/themes/refind-theme/}>
+<\textcolor{dir}{/boot/refind/themes/}>
+\end{Verbatim}
     \end{enumerate}
 \end{enumerate}
 
