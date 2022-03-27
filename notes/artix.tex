@@ -315,7 +315,7 @@ Make sure, that Secure Boot is disabled!
 \end{Verbatim}
     \end{enumerate}
 \end{enumerate}
-    \subsection{Advanced LUKS stuff}
+    \subsection{(Advanced LUKS Stuff)}
 \begin{itemize}
     \item \textbf{Open LUKS:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -454,24 +454,22 @@ Make sure, that Secure Boot is disabled!
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S dosfstools cryptsetup btrfs-progs
 \end{Verbatim}
-    \item \textbf{Bootloader: @WIP}
+    \item \textbf{Bootloader:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S refind
 \end{Verbatim}
-     \item \textbf{Initramfs: @WIP}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S dracut
-\end{Verbatim}
+     \item \textbf{Initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -Rns mkinitcpio
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S dracut
 \end{Verbatim}
     \item \textbf{Microcode:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S intel-ucode
 \end{Verbatim}
-    \item \textbf{Kernel:}
+    \item \textbf{Kernel and drivers:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S linux [linux-firmware]
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S linux linux-firmware
 \end{Verbatim}
     \item \textbf{Init:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -484,7 +482,6 @@ Make sure, that Secure Boot is disabled!
 \end{itemize}
 
 \section{SWAP File}
-\url{https://btrfs.readthedocs.io/en/latest/Swapfile.html}
 \begin{enumerate}
     \item \textbf{Allocate space on COW filesystem:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -526,15 +523,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \end{Verbatim}
 \end{enumerate}
 
-\section{Booting}
-\subsection{Kernel Parameters}
-\begin{itemize}
-    \item \textbf{List of kernel parameters:}
-    \begin{itemize}
-        \item \url{https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html}
-    \end{itemize}
-\end{itemize}
-
+\section{Boot}
 \subsection{ESP File Structure}
 \begin{enumerate}
     \item \textbf{Create directories for entries:}
@@ -554,7 +543,6 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/vmlinuz-linux} <\textcolor{dir}{/boot/linuces/artix/}>
 \end{Verbatim}
 \end{enumerate}
-
 \subsection{Dracut}
 \begin{enumerate}
     \item \textbf{Find kernel version:}
@@ -568,7 +556,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
     \end{itemize}
     \item \textbf{Generate initramfs: @WIP}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{dracut} -f /boot/linuces/artix/initramfs-linux.img
+\textcolor{root}{(chroot) root#} \textcolor{command}{dracut} -f <\textcolor{file}{/boot/linuces/artix/initramfs-linux.img}>
 --kver 5.16.16-artix1-1 -H
 \end{Verbatim}
     \item \textbf{Testing zone: @WIP}
@@ -579,8 +567,6 @@ dracut -f /boot/initramfs-linux.img --kver 5.16.16-artix1-1
 -m "i18n btrfs crypt dm kernel-modules kernel-modules-extra
 rootfs-block terminfo udev-rules usrmount base fs-lib shutdown"
 --fstab <\textcolor{file}{/etc/fstab}>
-
-
 --kernel-cmdline="rw init=/sbin/init root=/dev/mapper/luks-root rootfstype=btrfs
 
 rootfstype=btrfs
@@ -592,14 +578,13 @@ rd.luks.uuid=<UUID_/dev/sda2>
 -L 3
 \end{Verbatim}
 \end{enumerate}
-
 \subsection{rEFInd}
 \begin{enumerate}
     \item \textbf{Copy rEFInd executable to ESP:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind_x64.efi} <\textcolor{dir}{/boot/refind/}>
 \end{Verbatim}
-    \item \textbf{Copy rEFInd icons and fonts:}
+    \item \textbf{Copy default rEFInd icons and fonts:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r \textcolor{dir}{/usr/share/refind/icons/} <\textcolor{dir}{/boot/refind/}>
 \textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r \textcolor{dir}{/usr/share/refind/fonts/} <\textcolor{dir}{/boot/refind/}>
@@ -634,20 +619,43 @@ menuentry "Artix" \{
     #disabled
 \}
 \end{Verbatim}
+    \item \textbf{Apply rEFInd theme:}
+    \begin{enumerate}
+        \item \textbf{Create directory for themes:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} <\textcolor{dir}{/boot/refind/themes/}>
+\end{Verbatim}
+        \item \textbf{Copy theme to themes directory:}
+    \end{enumerate}
 \end{enumerate}
 
 
 
-
 \chapter{Quick Reference}
+\section{Linux}
+\begin{itemize}
+    \item \textbf{Kernel parameters:}
+    \begin{itemize}
+        \item \url{https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html}
+    \end{itemize}
+\end{itemize}
+
+\section{Filesystems}
+\begin{itemize}
+    \item \textbf{Btrfs:}
+    \begin{itemize}
+        \item \url{https://btrfs.readthedocs.io/en/latest/Swapfile.html}
+    \end{itemize}
+\end{itemize}
+
 \section{Init Systems}
 \begin{itemize}
-    \item \textbf{Runit}
+    \item \textbf{Runit:}
     \begin{itemize}
         \item \url{http://smarden.org/runit/index.html}
         \item \url{https://wiki.artixlinux.org/Main/Runit}
     \end{itemize}
-    \item \textbf{Dinit}
+    \item \textbf{Dinit:}
     \begin{itemize}
         \item \url{https://davmac.org/projects/dinit/}
         \item \url{https://github.com/davmac314/dinit/}
