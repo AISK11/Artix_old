@@ -377,7 +377,7 @@ Make sure, that Secure Boot is disabled!
     \item \textbf{Format root partition:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{mkfs.btrfs} <\textcolor{block}{/dev/mapper/luks-root}>
-\textcolor{root}{root#} \textcolor{command}{btrfs} filesystem label <\textcolor{block}{/dev/mapper/luks-root}> <ARTIX>
+\textcolor{root}{root#} \textcolor{command}{btrfs} filesystem label <\textcolor{block}{/dev/mapper/luks-root}> <LUKS-ROOT>
 \end{Verbatim}
 \end{enumerate}
 
@@ -500,7 +500,8 @@ Make sure, that Secure Boot is disabled!
 \end{Verbatim}
 \end{enumerate}
 
-\section{Fstab}
+\section{Fstab and Crypttab}
+\subsection{Fstab}
 \begin{enumerate}
     \item \textbf{Find UUIDs for block devices:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -509,25 +510,24 @@ Make sure, that Secure Boot is disabled!
     \item \textbf{Configure fstab:}
 \newline File (\textbf{\textcolor{file}{/etc/fstab}}):
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{comment}{## <partition> <mount>   <fs>  <options>        <dump> <pass>}
-LABEL=ESP      /boot/    vfat  umask=0077       0 1
-LABEL=ARTIX    /         btrfs defaults,noatime 0 0
-/swap          none      swap  defaults         0 0
+\textcolor{comment}{## <partition>  <mount>   <fs>  <options>        <dump> <pass>}
+LABEL=ESP       /boot/    vfat  umask=0077       0 1
+LABEL=LUKS-ROOT /         btrfs defaults,noatime 0 0
+/swap           none      swap  defaults         0 0
 \end{Verbatim}
 \end{enumerate}
-
-\section{Crypttab}
+\subsection{Crypttab}
 \begin{enumerate}
     \item \textbf{Add root filesystem partition to crypttab:}
-\newline File (\textbf{\textcolor{file}{/etc/fstab}}):
+\newline File (\textbf{\textcolor{file}{/etc/crypttab}}):
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{comment}{## </dev/mapper/name> <device>              <password>  <options>}
 luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \end{Verbatim}
 \end{enumerate}
 
-\section{Booting @WIP}
-\section{Kernel Parameters}
+\section{Booting}
+\subsection{Kernel Parameters}
 \begin{itemize}
     \item \textbf{List of kernel parameters:}
     \begin{itemize}
@@ -535,27 +535,43 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
     \end{itemize}
 \end{itemize}
 
-\subsection{Initramfs @WIP}
+\subsection{ESP File Structure}
 \begin{enumerate}
+    \item \textbf{Create directories for entries:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} -p <\textcolor{dir}{/boot/refind/}> <\textcolor{dir}{/boot/linuces/artix/}>
+\end{Verbatim}
     \item \textbf{Remove auto-generated initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{rm} \textcolor{file}{initramfs*}
+\textcolor{root}{(chroot) root#} \textcolor{command}{rm} \textcolor{file}{init*}
 \end{Verbatim}
+    \item \textbf{Move microcode to correct directory:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/intel-ucode.img} <\textcolor{dir}{/boot/linuces/}>
+\end{Verbatim}
+    \item \textbf{Move kernel to linux directory:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/vmlinuz-linux} <\textcolor{dir}{/boot/linuces/artix/}>
+\end{Verbatim}
+\end{enumerate}
+
+\subsection{Dracut}
+\begin{enumerate}
     \item \textbf{Find kernel version:}
     \begin{itemize}
         \item \textbf{Kernel version in boot:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{ls} \textcolor{dir}{/boot/}
-\textcolor{root}{(chroot) root#} \textcolor{command}{file} <\textcolor{file}{/boot/vmlinux-linux}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{file} <\textcolor{file}{/boot/linuces/artix/vmlinux-linux}>
 \end{Verbatim}
         \item \textbf{Available kernels:}
 \newline \textbf{\textcolor{dir}{/lib/modules/}}
     \end{itemize}
-    \item \textbf{Generate initramfs:}
+    \item \textbf{Generate initramfs: @WIP}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{[root#]} \textcolor{command}{dracut} -f /boot/initramfs-linux.img --kver 5.16.16-artix1-1 -H
+\textcolor{root}{(chroot) root#} \textcolor{command}{dracut} -f /boot/linuces/artix/initramfs-linux.img
+--kver 5.16.16-artix1-1 -H
 \end{Verbatim}
-    \item \textbf{Testing zone:}
+    \item \textbf{Testing zone: @WIP}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{dracut}
 dracut -f /boot/initramfs-linux.img --kver 5.16.16-artix1-1
@@ -577,45 +593,50 @@ rd.luks.uuid=<UUID_/dev/sda2>
 \end{Verbatim}
 \end{enumerate}
 
-\subsection{Bootloader @WIP}
+\subsection{rEFInd}
 \begin{enumerate}
-    \item \textbf{Set up rEFInd:}
-    \begin{enumerate}
-        \item \textbf{Create directory:}
+    \item \textbf{Copy rEFInd executable to ESP:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} -p <\textcolor{dir}{/boot/EFI/refind/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind_x64.efi} <\textcolor{dir}{/boot/refind/}>
 \end{Verbatim}
-        \item \textbf{Copy rEFInd executable to boot:}
+    \item \textbf{Copy rEFInd icons and fonts:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind_x64.efi} <\textcolor{dir}{/boot/EFI/refind/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r \textcolor{dir}{/usr/share/refind/icons/} <\textcolor{dir}{/boot/refind/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r \textcolor{dir}{/usr/share/refind/fonts/} <\textcolor{dir}{/boot/refind/}>
 \end{Verbatim}
-        \item \textbf{Copy rEFInd icons and fonts:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r \textcolor{dir}{/usr/share/refind/icons/} <\textcolor{dir}{/boot/EFI/refind/}>
-\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r \textcolor{dir}{/usr/share/refind/fonts/} <\textcolor{dir}{/boot/EFI/refind/}>
-\end{Verbatim}
-        \item \textbf{Copy rEFInd config file:}
-        \begin{itemize}
-            \item \textbf{Github:}
-
-            \item \textbf{Default rEFInd file:}
+    \item \textbf{Copy rEFInd config file:}
+    \begin{itemize}
+        \item \textbf{Github:}
+\newline \url{}
+        \item \textbf{Default rEFInd file:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind.conf-sample}
-<\textcolor{file}{/boot/EFI/refind/refind.conf}>
+<\textcolor{file}{/boot/refind/refind.conf}>
 \end{Verbatim}
-        \end{itemize}
-        \item \textbf{Create efibootmgr entry:}
+    \end{itemize}
+    \item \textbf{Create efibootmgr entry for rEFInd:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{efibootmgr} -c -d <\textcolor{block}{/dev/sdX}> -p 1
--l <\textcolor{file}{/boot/EFI/refind/refind\_x64.efi}> -L <"rEFInd"> -v
+-l <\textcolor{file}{/refind/refind\_x64.efi}> -L <"rEFInd"> -v
 \end{Verbatim}
-    \end{enumerate}
-    \item \textbf{Edit rEFInd config file: @WIP}
-\newline File (\textbf{\textcolor{file}{/boot/refind\_linux.conf}}):
+    \item \textbf{Add manual entry in refind config file:}
+\newline File (\textbf{\textcolor{file}{/boot/refind/refind.conf}}):
 \begin{Verbatim}[commandchars=\\\{\}]
-"Default" "rw cryptdevice=/dev/sda2:luks-root root=/dev/mapper/luks-root quiet"
+scanfor manual,internal,external,optical
+
+menuentry "Artix" \{
+    #icon
+    loader /linuces/artix/vmlinuz-linux
+    #initrd /linuces/intel-ucode.img
+    initrd /linuces/artix/initramfs-linux.img
+    options "rw quiet cryptdevice=LABEL=LUKS:luks-root
+    root=/dev/mapper/luks-root"
+    #disabled
+\}
 \end{Verbatim}
 \end{enumerate}
+
+
 
 
 \chapter{Quick Reference}
@@ -644,6 +665,8 @@ rd.luks.uuid=<UUID_/dev/sda2>
     \item \textbf{rEFInd:}
     \begin{itemize}
         \item \url{https://rodsbooks.com/refind/}
+        \item \url{https://www.rodsbooks.com/refind/linux.html}
+        \item \url{https://rodsbooks.com/refind/configfile.html}
         \item \url{https://bbs.archlinux.org/viewtopic.php?id=263686}
         \item \url{https://bbs.archlinux.org/viewtopic.php?id=262056}
     \end{itemize}
