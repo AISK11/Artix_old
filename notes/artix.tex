@@ -205,6 +205,10 @@ Make sure, that Secure Boot is disabled!
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{ip} l set <wlan0> up
 \end{Verbatim}
+        \item \textbf{Start wpa\_supplicant service: @TODO}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
         \item \textbf{See available interfaces and select one:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{wpa_cli} interface
@@ -709,10 +713,8 @@ menuentry "Artix" \{
     #volume  "Arch Linux"
     icon    refind/themes/refind-theme/icons/128-48/os_artix.png
     loader  /linuces/artix/vmlinuz-linux
-    #initrd  /linuces/intel-ucode.img
-    initrd  /linuces/artix/initramfs-linux.img
-    options "rw quiet root=/dev/mapper/luks-root"
-    root=/dev/mapper/luks-root"
+    options "initrd=/linuces/intel-ucode.img \char92
+    initrd=/linuces/intel-ucode.img rw root=/dev/mapper/luks-root quiet"
     #disabled
 \}
 \end{Verbatim}
@@ -869,6 +871,14 @@ permit nopass <USER>
         \item \url{https://rodsbooks.com/refind/configfile.html}
         \item \url{https://bbs.archlinux.org/viewtopic.php?id=263686}
         \item \url{https://bbs.archlinux.org/viewtopic.php?id=262056}
+    \end{itemize}
+\end{itemize}
+
+\section{Microcode}
+\begin{itemize}
+    \item \textbf{Microcode:}
+    \begin{itemize}
+        \item \url{https://gms.tf/check-cpu-microcode-version-on-linux.html}
     \end{itemize}
 \end{itemize}
 
