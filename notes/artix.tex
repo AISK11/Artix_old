@@ -554,28 +554,10 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
         \item \textbf{Available kernels:}
 \newline \textbf{\textcolor{dir}{/lib/modules/}}
     \end{itemize}
-    \item \textbf{Generate initramfs: @MEH}
+    \item \textbf{Generate initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{dracut} -f <\textcolor{file}{/boot/linuces/artix/initramfs-linux.img}>
 --kver 5.16.16-artix1-1 -H
-\end{Verbatim}
-    \item \textbf{Testing zone: @WIP}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{dracut}
-dracut -f /boot/initramfs-linux.img --kver 5.16.16-artix1-1
---early-microcode
--m "i18n btrfs crypt dm kernel-modules kernel-modules-extra
-rootfs-block terminfo udev-rules usrmount base fs-lib shutdown"
---fstab <\textcolor{file}{/etc/fstab}>
---kernel-cmdline="rw init=/sbin/init root=/dev/mapper/luks-root rootfstype=btrfs
-
-rootfstype=btrfs
-init=/sbin/init
-
-rd.luks.uuid=<UUID_/dev/sda2>
-
-[rd.debug|quiet]"
--L 3
 \end{Verbatim}
 \end{enumerate}
 \subsection{rEFInd}
