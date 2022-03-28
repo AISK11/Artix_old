@@ -106,7 +106,7 @@
 \end{table}
 
 
-\chapter{Download}
+\chapter{Download and Boot}
 \section{Download Artix ISO}
 \begin{enumerate}
     \item \textbf{Download Artix ISO}
@@ -125,7 +125,7 @@
     \item \textbf{Flash image to USB:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{dd} if=<\textcolor{file}{./artix-base-runit-<YYYYMMDD>-x86_64.iso>.iso}> of=<\textcolor{block}{/dev/sdX}>
-[conv=fsync] [bs=4M] [status=progress] && \textcolor{command}{sync}
+[bs=4M] [status=progress] && \textcolor{command}{sync}
 \end{Verbatim}
 \end{enumerate}
 
@@ -158,11 +158,19 @@ Make sure, that Secure Boot is disabled!
     \item \textbf{Access root:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{user}{user\$} \textcolor{command}{sudo} passwd root
-> <NEW_ROOT_PWD>
-> <NEW_ROOT_PWD (VERIFY)>
+> <NEW_ROOT_PASSWORD>
+> <NEW_ROOT_PASSWORD (VERIFY)>
 \textcolor{user}{user\$} \textcolor{command}{su} -
 \end{Verbatim}
 \end{itemize}
+
+\section{Disable pcspkr}
+\begin{enumerate}
+    \item \textbf{Disable pcspkr module:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{modprobe} -r pcspkr
+\end{Verbatim}
+\end{enumerate}
 
 \section{Verify UEFI}
 \begin{itemize}
@@ -174,14 +182,115 @@ Make sure, that Secure Boot is disabled!
 \end{Verbatim}
 \end{itemize}
 
-\section{Connect To The Internet @TODO}
+\section{Connect To The Internet}
 \begin{itemize}
     \item \textbf{Ethernet}
-
+    \begin{enumerate}
+        \item \textbf{Put interface to UP state:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{ip} l set <eth0> up
+\end{Verbatim}
+        \item \textbf{Lease IP address:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dhcpcd} <eth0>
+\end{Verbatim}
+    \end{enumerate}
     \item \textbf{WiFi}
+    \begin{enumerate}
+        \item \textbf{Unblock Wi-Fi:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{rfkill} unblock wlan
+\end{Verbatim}
+        \item \textbf{Put interface to UP state:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{ip} l set <wlan0> up
+\end{Verbatim}
+        \item \textbf{See available interfaces and select one:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{wpa_cli} interface
+\textcolor{root}{root#} \textcolor{command}{wpa_cli} interface <wlan0>
+\end{Verbatim}
+        \item \textbf{See current wlan status and scan for networks:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{wpa_cli} status
+\textcolor{root}{root#} \textcolor{command}{wpa_cli} scan
+\textcolor{root}{root#} \textcolor{command}{wpa_cli} scan_results
+\end{Verbatim}
+        \item \textbf{Configure wpa\_supplicant:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{touch} <\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}>
+\end{Verbatim}
+File (\textbf{\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}}):
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{comment}{## Basic settings.}
+ctrl_interface=/run/wpa_supplicant
+update_config=1
+
+\textcolor{comment}{## Country for wireless channels (2 letter ISO country code, e.g. DK = Denmark).}
+country=DK
+
+\textcolor{comment}{## UNPROTECTED:}
+network=\{
+  ssid="<ESSID>"
+  scan_ssid=1                 \textcolor{comment}{## Find hidden network}
+  key_mgmt=NONE
+  priority=3                  \textcolor{comment}{## Connection priority}
+\}
+
+\textcolor{comment}{## WPA-PSK:}
+network=\{
+  ssid="<ESSID>"
+  scan_ssid=1                 \textcolor{comment}{## Find hidden network}
+  key_mgmt=WPA-PSK
+  psk="<PASSWORD>"
+  #psk=<32byte-HEX-NUMBER>
+  priority=1                  \textcolor{comment}{## Connection priority}
+\}
+
+\textcolor{comment}{## WPA-EAP:}
+network=\{
+  ssid="<ESSID>"
+  scan_ssid=1                 \textcolor{comment}{## Find hidden network}
+  key_mgmt=WPA-EAP
+  #eap=PEAP
+  identity="<EMAIL@ADDRESS>"
+  password="9evqh2vm"
+  #psk=<32byte-HEX-NUMBER>
+  #ca_cert="/etc/cert/ca.pem"
+  #phase1="peaplabel=0"
+  phase2="auth=MSCHAPV2"
+  priority=2                  \textcolor{comment}{## Connection priority}
+\}
+\end{Verbatim}
+    \item \textbf{Connect to configured ESSID:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{killall} -9 wpa\_supplicant
+\textcolor{root}{root#} \textcolor{command}{wpa\_supplicant} -B -D wext -i <wlan0>
+-c <\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}>
+\end{Verbatim}
+    \item \textbf{Lease IP address:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dhcpcd} <wlan0>
+\end{Verbatim}
+    \end{enumerate}
 \end{itemize}
 
-\section{Time Sync @TODO}
+\section{Time Sync}
+\begin{enumerate}
+    \item \textbf{Check current system and hardware clock (RTC):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{date}
+\textcolor{root}{root#} \textcolor{command}{hwclock}
+\end{Verbatim}
+    \item \textbf{Manually set system clock:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{date} <MMDDhhmmYYYY>
+\end{Verbatim}
+    \item \textbf{Update RTC with system clock:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{hwclock} --systohc
+\end{Verbatim}
+\end{enumerate}
 
 \section{Install additional software}
 \begin{enumerate}
@@ -310,8 +419,8 @@ Make sure, that Secure Boot is disabled!
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{cryptsetup} luksFormat --label <LUKS> <\textcolor{block}{/dev/sdX2}>
 > YES
-> <PASSWORD>
-> <PASSWORD (VERIFY)>
+> <NEW_LUKS_PASSWORD>
+> <NEW_LUKS_PASSWORD (VERIFY)>
 \end{Verbatim}
     \end{enumerate}
 \end{enumerate}
@@ -418,6 +527,10 @@ Make sure, that Secure Boot is disabled!
     \item \textbf{Mount boot partition:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{mount} <\textcolor{block}{/dev/sdX1}> \textcolor{dir}{/boot/}
+\end{Verbatim}
+    \item \textbf{Add DNS server:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{echo} "nameserver 1.1.1.1" >> \textcolor{file}{/etc/resolv.conf}
 \end{Verbatim}
 \end{enumerate}
 
@@ -558,7 +671,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
     \item \textbf{Generate initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{dracut} -f <\textcolor{file}{/boot/linuces/artix/initramfs-linux.img}>
---kver 5.16.16-artix1-1 -H
+--kver <5.16.16-artix1-1> -H
 \end{Verbatim}
 \end{enumerate}
 \subsection{rEFInd}
@@ -620,14 +733,85 @@ menuentry "Artix" \{
     \end{enumerate}
 \end{enumerate}
 
+\section{Root User}
+\begin{enumerate}
+    \item \textbf{Set password for root user:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{passwd} root
+> <NEW_ROOT_PASSWORD>
+> <NEW_ROOT_PASSWORD (VERIFY)>
+\end{Verbatim}
+\end{enumerate}
+
+\section{Finishing}
+\begin{enumerate}
+    \item \textbf{Reboot:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{reboot}
+\end{Verbatim}
+\end{enumerate}
+
 
 \chapter{Post-Installation}
+\section{Update system}
+\begin{enumerate}
+    \item \textbf{Update system:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes}] | \textcolor{command}{pacman} -Syyu
+\end{Verbatim}
+\end{enumerate}
+
+\section{Blacklist pcspkr}
+\begin{enumerate}
+    \item \textbf{See if pcspkr is in use:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{lsmod} | \textcolor{command}{grep} -i pcspkr
+\end{Verbatim}
+    \item \textbf{Create modules blacklist file:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{touch} <\textcolor{file}{/etc/modprobe.d/blacklist.conf}>
+\end{Verbatim}
+    \item \textbf{Add pcspkr to blacklisted file:}
+\newline File (\textbf{\textcolor{file}{/boot/refind/refind.conf}}):
+\begin{Verbatim}[commandchars=\\\{\}]
+blacklist pcspkr
+\end{Verbatim}
+    \item \textbf{Reboot PC:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{reboot}
+\end{Verbatim}
+\end{enumerate}
+
+\section{Add non-root user}
+\begin{enumerate}
+    \item \textbf{Install doas:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes}] | \textcolor{command}{pacman} -S opendoas
+\end{Verbatim}
+    \item \textbf{Create user:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{useradd} -m <USER>
+\textcolor{root}{root#} \textcolor{command}{passwdd} <USER>
+> <NEW_USER_PASSWORD>
+> <NEW_USER_PASSWORD (VERIFY)>
+\end{Verbatim}
+    \item \textbf{Add user to doas group:}
+\newline File (\textbf{\textcolor{file}{/etc/doas.conf}}):
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{comment}{## <permit|deny> [nopass|persist] <USER>[:GROUP] [as <USER2>]}
+\textcolor{comment}{[cmd <COMMAND> [args <ARGUMENTS>]}
+permit nopass <USER>
+\end{Verbatim}
+\end{enumerate}
+
+
+\chapter{Local Settings}
 
 
 \chapter{Pacman}
 
 
-\chapter{Networking}
+\chapter{Network}
 
 
 \chapter{Runit}
