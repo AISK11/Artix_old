@@ -34,7 +34,7 @@
     \chead{\leftmark}
     \cfoot{\thepage}
 \fancypagestyle{plain}{
-\fancyhf{} 
+\fancyhf{}
     \chead{\leftmark}
     \cfoot{\thepage}
 }
@@ -126,7 +126,7 @@
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{dd} if=<\textcolor{file}{./artix-base-runit-<YYYYMMDD>-x86_64.iso>.iso}> of=<\textcolor{block}{/dev/sdX}>
 [conv=fsync] [bs=4M] [status=progress] && \textcolor{command}{sync}
-\end{Verbatim}   
+\end{Verbatim}
 \end{enumerate}
 
 \section{Boot Live Installer}
@@ -166,7 +166,7 @@ Make sure, that Secure Boot is disabled!
 
 \section{Verify UEFI}
 \begin{itemize}
-    \item \textbf{UEFI is used if following directory exists:} 
+    \item \textbf{UEFI is used if following directory exists:}
 \newline \textbf{\textcolor{dir}{/sys/firmware/efi/}}
     \item \textbf{Verify via kernel:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -177,7 +177,7 @@ Make sure, that Secure Boot is disabled!
 \section{Connect To The Internet @TODO}
 \begin{itemize}
     \item \textbf{Ethernet}
-    
+
     \item \textbf{WiFi}
 \end{itemize}
 
@@ -191,7 +191,7 @@ Make sure, that Secure Boot is disabled!
 \end{Verbatim}
     \item \textbf{Install parted:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{yes} | \textcolor{command}{pacman} -S parted 
+\textcolor{root}{root#} \textcolor{command}{yes} | \textcolor{command}{pacman} -S parted
 \end{Verbatim}
 \end{enumerate}
 
@@ -219,15 +219,15 @@ Make sure, that Secure Boot is disabled!
         \item \textbf{Get disk physical sector size:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{blockdev} [-v] --getpbsz <\textcolor{block}{/dev/sdX[Y]}>
-\end{Verbatim}           
+\end{Verbatim}
         \item \textbf{Get disk logical sector size (usually 512):}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{blockdev} [-v] --getss <\textcolor{block}{/dev/sdX[Y]}>
-\end{Verbatim}   
+\end{Verbatim}
         \item \textbf{Disk size in bytes:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{blockdev} [-v] --getsize64 <\textcolor{block}{/dev/sdX[Y]}>
-\end{Verbatim}        
+\end{Verbatim}
     \item \textbf{Check if disk is readonly (1 = ro, 0 = rw):}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{blockdev} [-v] --getro <\textcolor{block}{/dev/sdX[Y]}>
@@ -243,7 +243,7 @@ Make sure, that Secure Boot is disabled!
     \item \textbf{Unmount FS!}
     \item \textbf{Check disk for bad blocks:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{badblocks} [-b 4096] [-w [-t 0xaa]] [-v] [-s] 
+\textcolor{root}{root#} \textcolor{command}{badblocks} [-b 4096] [-w [-t 0xaa]] [-v] [-s]
 <\textcolor{block}{/dev/sdX[Y]}> | \textcolor{command}{tee} -a <\textcolor{file}{OUTPUT_FILE}>
 \end{Verbatim}
 \end{enumerate}
@@ -331,20 +331,20 @@ Make sure, that Secure Boot is disabled!
         \item \textbf{See LUKS header:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{cryptsetup} luksDump <\textcolor{block}{/dev/sdX2}>
-\end{Verbatim}        
+\end{Verbatim}
         \item \textbf{Make LUKS header backup:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{cryptsetup} luksHeaderBackup <\textcolor{block}{/dev/sdX2}>
 --header-backup-file <\textcolor{file}{FILE}>
-\end{Verbatim}        
+\end{Verbatim}
         \item \textbf{Destroy LUKS header:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{cryptsetup} luksErase <\textcolor{block}{/dev/sdX2}>
 > YES
-\end{Verbatim}        
+\end{Verbatim}
         \item \textbf{Restore LUKS header:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{cryptsetup} luksHeaderRestore <\textcolor{block}{/dev/sdX2}> 
+\textcolor{root}{root#} \textcolor{command}{cryptsetup} luksHeaderRestore <\textcolor{block}{/dev/sdX2}>
 --header-backup-file <\textcolor{file}{FILE}>
 > YES
 \end{Verbatim}
@@ -353,7 +353,7 @@ Make sure, that Secure Boot is disabled!
     \begin{itemize}
         \item \textbf{Change password:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{cryptsetup} luksChangeKey <\textcolor{block}{/dev/sdX2}> 
+\textcolor{root}{root#} \textcolor{command}{cryptsetup} luksChangeKey <\textcolor{block}{/dev/sdX2}>
 > <OLD_PASSWORD>
 > <NEW_PASSWORD>
 > <NEW_PASSWORD (VERIFY)>
@@ -386,7 +386,7 @@ Make sure, that Secure Boot is disabled!
     \item \textbf{Create mount directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{mkdir} <\textcolor{dir}{/mnt/artix/}>
-\end{Verbatim}    
+\end{Verbatim}
     \item \textbf{Mount Artix:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{mount} <\textcolor{block}{/dev/mapper/luks-root}> <\textcolor{dir}{/mnt/artix/}>
@@ -408,13 +408,13 @@ Make sure, that Secure Boot is disabled!
 \textcolor{root}{root#} \textcolor{command}{mount} --make-rslave <\textcolor{dir}{/mnt/artix/dev/}>
 \textcolor{root}{root#} \textcolor{command}{mount} --bind \textcolor{dir}{/run/} <\textcolor{dir}{/mnt/artix/run/}>
 \textcolor{root}{root#} \textcolor{command}{mount} --make-slave <\textcolor{dir}{/mnt/artix/run/}>
-\end{Verbatim}  
+\end{Verbatim}
     \item \textbf{Chroot:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{chroot} <\textcolor{dir}{/mnt/artix/}> \textcolor{file}{/bin/bash}
 \textcolor{root}{root#} \textcolor{command}{source} \textcolor{file}{/etc/profile}
 \textcolor{root}{root#} \textcolor{command}{export} PS1="(chroot) \$\{PS1\}"
-\end{Verbatim}  
+\end{Verbatim}
     \item \textbf{Mount boot partition:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{mount} <\textcolor{block}{/dev/sdX1}> \textcolor{dir}{/boot/}
@@ -473,6 +473,7 @@ Make sure, that Secure Boot is disabled!
 \end{Verbatim}
     \item \textbf{Init:}
 \begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{pacman} -Rns dinit-base
 \textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S runit elogind-runit
 \end{Verbatim}
     \item \textbf{Networking:}
@@ -489,7 +490,7 @@ Make sure, that Secure Boot is disabled!
 \textcolor{root}{(chroot) root#} \textcolor{command}{chattr} +C <\textcolor{file}{/swap}>
 \textcolor{root}{(chroot) root#} \textcolor{command}{fallocate} -l 4G <\textcolor{file}{/swap}>
 \textcolor{root}{(chroot) root#} \textcolor{command}{chmod} 0600 <\textcolor{file}{/swap}>
-\end{Verbatim}       
+\end{Verbatim}
     \item \textbf{Make SWAP:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{mkswap} <\textcolor{file}{/swap}>
@@ -503,7 +504,7 @@ Make sure, that Secure Boot is disabled!
     \item \textbf{Find UUIDs for block devices:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{blkid}
-\end{Verbatim}       
+\end{Verbatim}
     \item \textbf{Configure fstab:}
 \newline File (\textbf{\textcolor{file}{/etc/fstab}}):
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -528,7 +529,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \begin{enumerate}
     \item \textbf{Create directories for entries:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} -p <\textcolor{dir}{/boot/refind/}> <\textcolor{dir}{/boot/linuces/artix/}> 
+\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} -p <\textcolor{dir}{/boot/refind/}> <\textcolor{dir}{/boot/linuces/artix/}>
 \end{Verbatim}
     \item \textbf{Remove auto-generated initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -550,7 +551,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
         \item \textbf{Kernel version in boot:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{file} <\textcolor{file}{/boot/linuces/artix/vmlinuz-linux}>
-\end{Verbatim}        
+\end{Verbatim}
         \item \textbf{Available kernels:}
 \newline \textbf{\textcolor{dir}{/lib/modules/}}
     \end{itemize}
@@ -577,13 +578,13 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \newline \url{https://github.com/AISK11/Artix/blob/main/configs/refind/refind.conf}
         \item \textbf{Default rEFInd file:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind.conf-sample} 
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind.conf-sample}
 <\textcolor{file}{/boot/refind/refind.conf}>
 \end{Verbatim}
     \end{itemize}
     \item \textbf{Create efibootmgr entry for rEFInd:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{efibootmgr} -c -d <\textcolor{block}{/dev/sdX}> -p 1 
+\textcolor{root}{(chroot) root#} \textcolor{command}{efibootmgr} -c -d <\textcolor{block}{/dev/sdX}> -p 1
 -l <\textcolor{file}{/refind/refind\_x64.efi}> -L <"rEFInd"> -v
 \end{Verbatim}
     \item \textbf{Add manual entry in refind config file:}
@@ -597,11 +598,12 @@ menuentry "Artix" \{
     loader  /linuces/artix/vmlinuz-linux
     #initrd  /linuces/intel-ucode.img
     initrd  /linuces/artix/initramfs-linux.img
-    options "rw quiet cryptdevice=LABEL=LUKS:luks-root 
+    options "rw quiet root=/dev/mapper/luks-root"
     root=/dev/mapper/luks-root"
     #disabled
 \}
 \end{Verbatim}
+% cryptdevice=LABEL=LUKS:luks-root
     \item \textbf{Apply rEFInd theme:}
     \begin{enumerate}
         \item \textbf{Create directory for themes:}
@@ -612,11 +614,28 @@ menuentry "Artix" \{
 \newline \url{https://github.com/AISK11/Artix/tree/main/configs/refind/themes/refind-theme}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{git} clone https://www.github.com/aisk11/artix
-\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r <\textcolor{dir}{./artix/configs/refind/themes/refind-theme/}> 
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r <\textcolor{dir}{./artix/configs/refind/themes/refind-theme/}>
 <\textcolor{dir}{/boot/refind/themes/}>
 \end{Verbatim}
     \end{enumerate}
 \end{enumerate}
+
+
+\chapter{Post-Installation}
+
+
+\chapter{Pacman}
+
+
+\chapter{Networking}
+
+
+\chapter{Runit}
+
+
+\chapter{Zsh \& Vim}
+
+
 
 
 
