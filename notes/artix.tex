@@ -646,7 +646,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \begin{enumerate}
     \item \textbf{Create directories for entries:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} -p <\textcolor{dir}{/boot/refind/}> <\textcolor{dir}{/boot/linuces/artix/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} -p <\textcolor{dir}{/boot/EFI/BOOT/}> <\textcolor{dir}{/boot/EFI/linuces/artix/}>
 \end{Verbatim}
     \item \textbf{Remove auto-generated initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -654,11 +654,11 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \end{Verbatim}
     \item \textbf{Move microcode to correct directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/intel-ucode.img} <\textcolor{dir}{/boot/linuces/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/intel-ucode.img} <\textcolor{dir}{/boot/EFI/linuces/}>
 \end{Verbatim}
     \item \textbf{Move kernel to linux directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/vmlinuz-linux} <\textcolor{dir}{/boot/linuces/artix/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/vmlinuz-linux} <\textcolor{dir}{/boot/EFI/linuces/artix/}>
 \end{Verbatim}
 \end{enumerate}
 \subsection{Dracut}
@@ -667,14 +667,14 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
     \begin{itemize}
         \item \textbf{Kernel version in boot:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{file} <\textcolor{file}{/boot/linuces/artix/vmlinuz-linux}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{file} <\textcolor{file}{/boot/EFI/linuces/artix/vmlinuz-linux}>
 \end{Verbatim}
         \item \textbf{Available kernels:}
 \newline \textbf{\textcolor{dir}{/lib/modules/}}
     \end{itemize}
     \item \textbf{Generate initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{dracut} -f <\textcolor{file}{/boot/linuces/artix/initramfs-linux.img}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{dracut} -f <\textcolor{file}{/boot/EFI/linuces/artix/initramfs-linux.img}>
 --kver <5.16.16-artix1-1> -H
 \end{Verbatim}
 \end{enumerate}
@@ -682,12 +682,12 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \begin{enumerate}
     \item \textbf{Copy rEFInd executable to ESP:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind_x64.efi} <\textcolor{dir}{/boot/refind/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind_x64.efi} <\textcolor{file}{/boot/EFI/BOOT/BOOTX64.EFI}>
 \end{Verbatim}
     \item \textbf{Copy default rEFInd icons and fonts:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r \textcolor{dir}{/usr/share/refind/icons/} <\textcolor{dir}{/boot/refind/}>
-\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r \textcolor{dir}{/usr/share/refind/fonts/} <\textcolor{dir}{/boot/refind/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r \textcolor{dir}{/usr/share/refind/icons/} \textcolor{dir}{/usr/share/refind/fonts/}
+<\textcolor{dir}{/boot/EFI/BOOT/}>
 \end{Verbatim}
     \item \textbf{Copy rEFInd config file:}
     \begin{itemize}
@@ -696,25 +696,26 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
         \item \textbf{Default rEFInd file:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind.conf-sample}
-<\textcolor{file}{/boot/refind/refind.conf}>
+<\textcolor{file}{/boot/EFI/BOOT/refind.conf}>
 \end{Verbatim}
     \end{itemize}
     \item \textbf{Create efibootmgr entry for rEFInd:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{efibootmgr} -c -d <\textcolor{block}{/dev/sdX}> -p 1
--l <\textcolor{file}{/refind/refind\_x64.efi}> -L <"rEFInd"> -v
+-l <\textcolor{file}{/EFI/BOOT/BOOTX64.EFI}> -L <"rEFInd"> -v
 \end{Verbatim}
-    \item \textbf{Add manual entry in refind config file:}
-\newline File (\textbf{\textcolor{file}{/boot/refind/refind.conf}}):
+    \item \textbf{Add manual entry to refind config file:}
+\newline File (\textbf{\textcolor{file}{/boot/EFI/BOOT/refind.conf}}):
 \begin{Verbatim}[commandchars=\\\{\}]
 scanfor manual,internal,external,optical
 
 menuentry "Artix" \{
     #volume  "Arch Linux"
-    icon    refind/themes/refind-theme/icons/128-48/os_artix.png
-    loader  /linuces/artix/vmlinuz-linux
-    options "initrd=/linuces/intel-ucode.img \char92
-    initrd=/linuces/intel-ucode.img rw root=/dev/mapper/luks-root quiet"
+    icon    themes/refind-theme/icons/128-48/os_artix.png
+    loader  /EFI/linuces/artix/vmlinuz-linux
+    options "initrd=/EFI/linuces/intel-ucode.img \char92
+    initrd=/EFI/linuces/artix/initramfs-linux.img \char92
+    rw root=/dev/mapper/luks-root quiet"
     #disabled
 \}
 \end{Verbatim}
@@ -723,14 +724,14 @@ menuentry "Artix" \{
     \begin{enumerate}
         \item \textbf{Create directory for themes:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} <\textcolor{dir}{/boot/refind/themes/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} <\textcolor{dir}{/boot/EFI/BOOT/themes/}>
 \end{Verbatim}
         \item \textbf{Copy theme to themes directory:}
 \newline \url{https://github.com/AISK11/Artix/tree/main/configs/refind/themes/refind-theme}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{git} clone https://www.github.com/aisk11/artix
 \textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r <\textcolor{dir}{./artix/configs/refind/themes/refind-theme/}>
-<\textcolor{dir}{/boot/refind/themes/}>
+<\textcolor{dir}{/boot/EFI/BOOT/themes/}>
 \end{Verbatim}
     \end{enumerate}
 \end{enumerate}
@@ -807,22 +808,29 @@ permit nopass <USER>
 \end{enumerate}
 
 
+\chapter{Runit}
+
+
 \chapter{Local Settings}
-
-
-\chapter{Pacman}
 
 
 \chapter{Network}
 
 
-\chapter{Runit}
+\chapter{Pacman}
 
 
 \chapter{Zsh \& Vim}
 
 
+\chapter{Xen}
 
+
+\chapter{ToDo}
+\begin{itemize}
+    \item UEFI fallback /boot/EFI/BOOT/bootx64.efi
+    \item Test ESP case sensitivity
+\end{itemize}
 
 
 \chapter{Quick Reference}
