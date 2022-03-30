@@ -646,7 +646,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \begin{enumerate}
     \item \textbf{Create directories for entries:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} -p <\textcolor{dir}{/boot/EFI/BOOT/}> <\textcolor{dir}{/boot/EFI/linuces/artix/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{mkdir} -p <\textcolor{dir}{/boot/EFI/BOOT/}> <\textcolor{dir}{/boot/EFI/artix/}>
 \end{Verbatim}
     \item \textbf{Remove auto-generated initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -654,11 +654,11 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \end{Verbatim}
     \item \textbf{Move microcode to correct directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/intel-ucode.img} <\textcolor{dir}{/boot/EFI/linuces/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/intel-ucode.img} <\textcolor{dir}{/boot/EFI/artix/}>
 \end{Verbatim}
     \item \textbf{Move kernel to linux directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/vmlinuz-linux} <\textcolor{dir}{/boot/EFI/linuces/artix/}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/vmlinuz-linux} <\textcolor{dir}{/boot/EFI/artix/}>
 \end{Verbatim}
 \end{enumerate}
 \subsection{Dracut}
@@ -667,14 +667,14 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
     \begin{itemize}
         \item \textbf{Kernel version in boot:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{file} <\textcolor{file}{/boot/EFI/linuces/artix/vmlinuz-linux}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{file} <\textcolor{file}{/boot/EFI/artix/vmlinuz-linux}>
 \end{Verbatim}
         \item \textbf{Available kernels:}
 \newline \textbf{\textcolor{dir}{/lib/modules/}}
     \end{itemize}
     \item \textbf{Generate initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{dracut} -f <\textcolor{file}{/boot/EFI/linuces/artix/initramfs-linux.img}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{dracut} -f <\textcolor{file}{/boot/EFI/artix/initramfs-linux.img}>
 --kver <5.16.16-artix1-1> -H
 \end{Verbatim}
 \end{enumerate}
@@ -710,11 +710,11 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 scanfor manual,internal,external,optical
 
 menuentry "Artix" \{
-    #volume  "Arch Linux"
+    #volume  "ESP"
     icon    /EFI/BOOT/themes/refind-theme/icons/128-48/os_artix.png
-    loader  /EFI/linuces/artix/vmlinuz-linux
-    options "initrd=/EFI/linuces/intel-ucode.img \char92
-    initrd=/EFI/linuces/artix/initramfs-linux.img \char92
+    loader  /EFI/artix/vmlinuz-linux
+    options "initrd=/EFI/artix/intel-ucode.img \char92
+    initrd=/EFI/artix/initramfs-linux.img \char92
     rw root=/dev/mapper/luks-root quiet"
     #disabled
 \}
