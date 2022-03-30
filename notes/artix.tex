@@ -680,9 +680,13 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \end{enumerate}
 \subsection{rEFInd}
 \begin{enumerate}
-    \item \textbf{Copy rEFInd executable to ESP:}
+    \item \textbf{Copy rEFInd to ESP:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind_x64.efi} <\textcolor{file}{/boot/EFI/BOOT/BOOTX64.EFI}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} \textcolor{file}{/usr/share/refind/refind_x64.efi} <\textcolor{dir}{/boot/EFI/BOOT/}>
+\end{Verbatim}
+    \item \textbf{Copy rEFInd to fallback:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} <\textcolor{file}{/boot/EFI/BOOT/refind_x64.efi}> <\textcolor{file}{/boot/EFI/BOOT/BOOTX64.EFI}>
 \end{Verbatim}
     \item \textbf{Copy default rEFInd icons and fonts:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -702,7 +706,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
     \item \textbf{Create efibootmgr entry for rEFInd:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{efibootmgr} -c -d <\textcolor{block}{/dev/sdX}> -p 1
--l <\textcolor{file}{/EFI/BOOT/BOOTX64.EFI}> -L <"rEFInd"> -v
+-l <\textcolor{file}{/EFI/BOOT/refind_x64.efi}> -L <"rEFInd"> -v
 \end{Verbatim}
     \item \textbf{Add manual entry to refind config file:}
 \newline File (\textbf{\textcolor{file}{/boot/EFI/BOOT/refind.conf}}):
