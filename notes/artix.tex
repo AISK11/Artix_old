@@ -125,7 +125,7 @@
     \item \textbf{Flash image to USB:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{dd} if=<\textcolor{file}{./artix-base-runit-<YYYYMMDD>-x86_64.iso>.iso}> of=<\textcolor{block}{/dev/sdX}>
-[bs=4M] [status=progress] && \textcolor{command}{sync}
+[bs=4M] [conv=fsync] [status=progress] && \textcolor{command}{sync}
 \end{Verbatim}
 \end{enumerate}
 
@@ -166,6 +166,10 @@ Make sure, that Secure Boot is disabled!
 
 \section{Disable pcspkr}
 \begin{enumerate}
+    \item \textbf{See if pcspkr is active:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{lsmod} | \textcolor{command}{grep} pcspkr
+\end{Verbatim}
     \item \textbf{Disable pcspkr module:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{modprobe} -r pcspkr
@@ -286,7 +290,7 @@ network=\{
 \textcolor{root}{root#} \textcolor{command}{date}
 \textcolor{root}{root#} \textcolor{command}{hwclock}
 \end{Verbatim}
-    \item \textbf{Manually set system clock:}
+    \item \textbf{Manually set system clock (UTC):}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{date} <MMDDhhmmYYYY>
 \end{Verbatim}
