@@ -97,7 +97,7 @@
     Root filesystem & btrfs\\
     SWAP & 4GB (file)\\
     Bootloader & rEFInd\\
-    Init & runit\\
+    Init & dinit\\
     Virtualization & Xen\\
     \hline
 \end{tabular}
@@ -114,7 +114,7 @@
         \item \textbf{Artix download page:}
 \newline \url{https://artixlinux.org/download.php}
         \item \textbf{Select install file:}
-\newline \menu[,]{Official ISO images, base, artix-base-runit-20220123-x86\_64.iso}
+\newline \menu[,]{Official ISO images, base, artix-base-dinit-20220123-x86\_64.iso}
     \end{itemize}
     \item \textbf{Verify download: @TODO}
 \end{enumerate}
@@ -168,7 +168,7 @@ Make sure, that Secure Boot is disabled!
 \begin{enumerate}
     \item \textbf{See if pcspkr is active:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{lsmod} | \textcolor{command}{grep} pcspkr
+\textcolor{root}{root#} \textcolor{command}{lsmod} | \textcolor{command}{grep} -i pcspkr
 \end{Verbatim}
     \item \textbf{Disable pcspkr module:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -209,9 +209,9 @@ Make sure, that Secure Boot is disabled!
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{ip} l set <wlan0> up
 \end{Verbatim}
-        \item \textbf{Start wpa\_supplicant service: @TODO}
+        \item \textbf{Start wpa\_supplicant service:}
 \begin{Verbatim}[commandchars=\\\{\}]
-
+\textcolor{root}{root#} \textcolor{command}{dinitctl} start wpa\_supplicant
 \end{Verbatim}
         \item \textbf{See available interfaces and select one:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -538,7 +538,7 @@ network=\{
 \end{Verbatim}
     \item \textbf{Add DNS server:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{echo} "nameserver 1.1.1.1" >> \textcolor{file}{/etc/resolv.conf}
+\textcolor{root}{(chroot) root#} \textcolor{command}{echo} "nameserver 1.1.1.1" > \textcolor{file}{/etc/resolv.conf}
 \end{Verbatim}
 \end{enumerate}
 
@@ -594,12 +594,12 @@ network=\{
 \end{Verbatim}
     \item \textbf{Init:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{pacman} -Rns dinit-base
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S runit elogind-runit
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S dinit elogind elogind-dinit
 \end{Verbatim}
     \item \textbf{Networking:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S dhcpcd wpa_supplicant
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S dhcpcd dhcpcd-dinit wpa_supplicant
+wpa_supplicant-dinit
 \end{Verbatim}
 \end{itemize}
 
@@ -764,14 +764,6 @@ menuentry "Artix" \{
 
 
 \chapter{Post-Installation}
-\section{Update system}
-\begin{enumerate}
-    \item \textbf{Update system:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} [\textcolor{command}{yes}] | \textcolor{command}{pacman} -Syyu
-\end{Verbatim}
-\end{enumerate}
-
 \section{Blacklist pcspkr}
 \begin{enumerate}
     \item \textbf{See if pcspkr is in use:}
@@ -783,7 +775,7 @@ menuentry "Artix" \{
 \textcolor{root}{root#} \textcolor{command}{touch} <\textcolor{file}{/etc/modprobe.d/blacklist.conf}>
 \end{Verbatim}
     \item \textbf{Add pcspkr to blacklisted file:}
-\newline File (\textbf{\textcolor{file}{/boot/refind/refind.conf}}):
+\newline File (\textbf{\textcolor{file}{/etc/modprobe.d/blacklist.conf}}):
 \begin{Verbatim}[commandchars=\\\{\}]
 blacklist pcspkr
 \end{Verbatim}
@@ -806,6 +798,10 @@ blacklist pcspkr
 > <NEW_USER_PASSWORD>
 > <NEW_USER_PASSWORD (VERIFY)>
 \end{Verbatim}
+    \item \textbf{Create doas config file:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{touch} \textcolor{file}{/etc/doas.conf}
+\end{Verbatim}
     \item \textbf{Add user to doas group:}
 \newline File (\textbf{\textcolor{file}{/etc/doas.conf}}):
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -816,10 +812,130 @@ permit nopass <USER>
 \end{enumerate}
 
 
-\chapter{Runit}
+\chapter{Dinit}
+\section{List services}
+\begin{itemize}
+    \item \textbf{List all services:}
+\newline \textbf{\textcolor{dir}{/etc/dinit.d/}}
+    \item \textbf{List all loaded services:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} list
+\end{Verbatim}
+    \item \textbf{Status of a service:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} status <SERVICE>
+\end{Verbatim}
+\end{itemize}
+
+\section{Start/Stop}
+\begin{itemize}
+    \item \textbf{Start service:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} start <SERVICE>
+\end{Verbatim}
+    \item \textbf{Stop service:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} stop <SERVICE>
+\end{Verbatim}
+\end{itemize}
+
+\section{Enable/Disable}
+\begin{itemize}
+    \item \textbf{List enabled services:}
+\newline \textbf{\textcolor{dir}{/etc/dinit.d/boot.d/}}
+    \item \textbf{Enable service on startup:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} enable <SERVICE>
+\end{Verbatim}
+    \item \textbf{Disable service on startup:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} disable <SERVICE>
+\end{Verbatim}
+\end{itemize}
+
+\section{Logs}
+\begin{itemize}
+    \item \textbf{See logs for services:}
+\newline \textbf{\textcolor{dir}{/var/log/dinit/}}
+\end{itemize}
 
 
 \chapter{Local Settings}
+\section{Hostname}
+Valid hostname characters: \textbf{a-z}, \textbf{0-9} and hyphens (\textbf{-}), but not on start.
+\begin{enumerate}
+    \item \textbf{Set hostname:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{echo} "<HOSTNAME>" > \textcolor{file}{/etc/hostname}
+\end{Verbatim}
+\end{enumerate}
+
+\section{Date \& Time}
+\subsection{Timezone}
+\begin{enumerate}
+    \item \textbf{List timezones:}
+\newline \textbf{\textcolor{dir}{/usr/share/zoneinfo/}}
+    \item \textbf{Set timezone:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{ln} -sf <\textcolor{file}{/usr/share/zoneinfo/Europe/Copenhagen}> \textcolor{file}{/etc/localtime}
+\end{Verbatim}
+\end{enumerate}
+\subsection{System Clock}
+\begin{enumerate}
+    \item \textbf{Show current datetime:}
+    \begin{itemize}
+        \item \textbf{Default:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{date}
+\end{Verbatim}
+        \item \textbf{ISO 8601 (YYYY-MM-DDThh:mm:ss(+|-)xx:xx):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{date} +'\%Y-\%m-\%dT\%H:\%M:\%S\%:z'
+\end{Verbatim}
+    \end{itemize}
+    \item \textbf{Set time:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{date} <MMDDhhmmYYYY>
+\end{Verbatim}
+    \item \textbf{Update hwclock (RTC):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{hwclock} --systohc
+\end{Verbatim}
+\end{enumerate}
+
+\section{Locales}
+\begin{enumerate}
+    \item \textbf{Print current locales:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{locale}
+\end{Verbatim}
+    \item \textbf{Supported locales:}
+\newline \textbf{\textcolor{dir}{/usr/share/i18n/locales/}}
+    \item \textbf{Choose locales:}
+\item File (\textbf{\textcolor{file}{/etc/locale.gen}}):
+\begin{Verbatim}[commandchars=\\\{\}]
+...
+en_DK.UTF-8 UTF-8
+en_DK ISO-8859-1
+en_GB.UTF-8 UTF-8
+en_GB ISO-8859-1
+...
+en_US.UTF-8 UTF-8
+en_US ISO-885-1
+...
+\end{Verbatim}
+    \item \textbf{Generate locales:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{locale-gen}
+\end{Verbatim}
+    \item \textbf{Print all available locales:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{locale} -a
+\end{Verbatim}
+    \item \textbf{Set system locale:}
+\newline File (\textbf{\textcolor{file}{/etc/locale.conf}}):
+\newline \url{}
+\end{enumerate}
 
 
 \chapter{Network}
@@ -834,59 +950,36 @@ permit nopass <USER>
 \chapter{Xen}
 
 
-\chapter{ToDo}
-\begin{itemize}
-    \item UEFI fallback /boot/EFI/BOOT/bootx64.efi
-    \item Test ESP case sensitivity
-\end{itemize}
-
-
 \chapter{Quick Reference}
-\section{Linux}
-\begin{itemize}
-    \item \textbf{Kernel parameters:}
-    \begin{itemize}
-        \item \url{https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html}
-    \end{itemize}
-\end{itemize}
-
-\section{Filesystems}
+\section{Filesystem}
 \begin{itemize}
     \item \textbf{Btrfs:}
     \begin{itemize}
-        \item \url{https://btrfs.readthedocs.io/en/latest/Swapfile.html}
-    \end{itemize}
-\end{itemize}
-
-\section{Init Systems}
-\begin{itemize}
-    \item \textbf{Runit:}
-    \begin{itemize}
-        \item \url{http://smarden.org/runit/index.html}
-        \item \url{https://wiki.artixlinux.org/Main/Runit}
-    \end{itemize}
-    \item \textbf{Dinit:}
-    \begin{itemize}
-        \item \url{https://davmac.org/projects/dinit/}
-        \item \url{https://github.com/davmac314/dinit/}
-        \item \url{https://wiki.artixlinux.org/Main/Dinit}
+        \item \url{https://btrfs.readthedocs.io/en/latest/Introduction.html}
+        \item \url{https://wiki.archlinux.org/title/Btrfs}
+        \item \url{https://wiki.gentoo.org/wiki/Btrfs}
     \end{itemize}
 \end{itemize}
 
 \section{Bootloaders}
 \begin{itemize}
-    \item \textbf{GRUB:}
-    \begin{itemize}
-        \item \url{https://web.mit.edu/rhel-doc/3/rhel-rg-en-3/s1-grub-configfile.html}
-        \item \url{https://gnu.huihoo.org/grub-0.90/html_chapter/grub_12.html}
-    \end{itemize}
     \item \textbf{rEFInd:}
     \begin{itemize}
-        \item \url{https://rodsbooks.com/refind/}
-        \item \url{https://www.rodsbooks.com/refind/linux.html}
-        \item \url{https://rodsbooks.com/refind/configfile.html}
-        \item \url{https://bbs.archlinux.org/viewtopic.php?id=263686}
-        \item \url{https://bbs.archlinux.org/viewtopic.php?id=262056}
+        \item \url{https://www.rodsbooks.com/refind/}
+    \end{itemize}
+    \item \textbf{GRUB:}
+    \begin{itemize}
+        \item \url{https://gnu.huihoo.org/grub-0.90/html_chapter/grub_12.html}
+        \item \url{https://web.mit.edu/rhel-doc/3/rhel-rg-en-3/s1-grub-configfile.html}
+    \end{itemize}
+\end{itemize}
+
+\section{Linux}
+\begin{itemize}
+    \item \textbf{Kernel:}
+    \begin{itemize}
+        \item \url{https://www.kernel.org/doc/html/}
+        \item \url{https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html}
     \end{itemize}
 \end{itemize}
 
@@ -895,7 +988,24 @@ permit nopass <USER>
     \item \textbf{Microcode:}
     \begin{itemize}
         \item \url{https://gms.tf/check-cpu-microcode-version-on-linux.html}
+        \item \url{https://wiki.archlinux.org/title/Microcode}
+        \item \url{https://wiki.gentoo.org/wiki/Microcode}
+        \item \url{https://wiki.debian.org/Microcode}
     \end{itemize}
 \end{itemize}
 
+\section{Init Systems}
+\begin{itemize}
+    \item \textbf{Dinit:}
+    \begin{itemize}
+        \item \url{https://davmac.org/projects/dinit/}
+        \item \url{https://github.com/davmac314/dinit/}
+        \item \url{https://wiki.artixlinux.org/Main/Dinit}
+    \end{itemize}
+    \item \textbf{Elogind:}
+    \begin{itemize}
+        \item \url{https://wiki.artixlinux.org/Main/Elogind}
+        \item \url{https://wiki.gentoo.org/wiki/Elogind}
+    \end{itemize}
+\end{itemize}
 \end{document}
