@@ -934,12 +934,59 @@ en_US ISO-885-1
 \end{Verbatim}
     \item \textbf{Set system locale:}
 \newline File (\textbf{\textcolor{file}{/etc/locale.conf}}):
-\newline \url{}
+\newline \url{https://github.com/AISK11/Artix/blob/main/configs/system/locale.conf}
+    \item \textbf{Apply changes:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{reboot}
+\end{Verbatim}
 \end{enumerate}
+
+\section{CLI Keyboard}
+Dracut initramfs will include keymap and font on regeneration!
+\begin{itemize}
+    \item \textbf{Keymap:}
+    \begin{enumerate}
+        \item \textbf{List all available keyboards:}
+\newline \textbf{\textcolor{dir}{/usr/share/kbd/keymaps/[i386/]}}
+        \item \textbf{Set CLI keyboard language:}
+\newline File (\textbf{\textcolor{file}{/etc/vconsole.conf}}):
+\begin{Verbatim}[commandchars=\\\{\}]
+KEYMAP=us
+\end{Verbatim}
+    \item \textbf{Apply changes:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{reboot}
+\end{Verbatim}
+    \end{enumerate}
+    \item \textbf{Font:}
+    \begin{enumerate}
+        \item \textbf{Show current CLI font:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{showconsolefont}
+\end{Verbatim}
+        \item \textbf{Show available fonts:}
+\newline \textbf{\textcolor{dir}{/usr/share/kbd/consolefonts/}}
+        \item \textbf{Set font:}
+        \begin{itemize}
+            \item \textbf{Temporary:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{setfont} <lat2-16>
+\end{Verbatim}
+            \item \textbf{Permanently:}
+\newline File (\textcolor{file}{/etc/vconsole.font}):
+\begin{Verbatim}[commandchars=\\\{\}]
+FONT=eurlatgr
+\end{Verbatim}
+        \end{itemize}
+        \item \textbf{Apply changes:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{reboot}
+\end{Verbatim}
+    \end{enumerate}
+\end{itemize}
 
 
 \chapter{Network}
-
 
 \chapter{Pacman}
 
