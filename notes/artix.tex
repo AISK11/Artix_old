@@ -778,25 +778,40 @@ blacklist pcspkr
 \end{Verbatim}
 \end{enumerate}
 
-\section{Add non-root user}
+\section{Create doas group}
 \begin{enumerate}
     \item \textbf{Install doas:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} [\textcolor{command}{yes}] | \textcolor{command}{pacman} -S opendoas
+\textcolor{root}{root#} [\textcolor{command}{yes}] | \textcolor{command}{pacman} -Rns sudo
 \end{Verbatim}
-    \item \textbf{Create user:}
+    \item \textbf{Create symlink for apps that needs sudo:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{ln} -sf \textcolor{file}{/usr/bin/doas} \textcolor{file}{/usr/bin/sudo}
+\end{Verbatim}
+    \item \textbf{Create group for privilege escalation:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{groupadd} <doas>
+\end{Verbatim}
+    \item \textbf{Add rights to the group:}
+\newline File (\textbf{\textcolor{file}{/etc/doas.conf}}):
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{comment}{## <permit|deny> [nopass|persist] <USER>[:GROUP] [as <USER2>]}
+\textcolor{comment}{[cmd <COMMAND> [args <ARGUMENTS>]}
+permit nopass :doas
+\end{Verbatim}
+
+\section{Create non-root user}
+    \item \textbf{Create user with home directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{useradd} -m <USER>
 \textcolor{root}{root#} \textcolor{command}{passwdd} <USER>
 > <NEW_USER_PASSWORD>
 > <NEW_USER_PASSWORD (VERIFY)>
 \end{Verbatim}
-    \item \textbf{Add user to doas group:}
-\newline File (\textbf{\textcolor{file}{/etc/doas.conf}}):
+    \item \textbf{Add user to the doas group:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{comment}{## <permit|deny> [nopass|persist] <USER>[:GROUP] [as <USER2>]}
-\textcolor{comment}{[cmd <COMMAND> [args <ARGUMENTS>]}
-permit nopass <USER>
+\textcolor{root}{root#} \textcolor{command}{usermod} -aG <doas> <USER>
 \end{Verbatim}
 \end{enumerate}
 
@@ -1162,13 +1177,18 @@ Recommended DNS resolvers: \url{https://www.privacytools.io/#dns}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{user}{user\$} \textcolor{command}{pacman} -Qk[k] [PACKAGE]
 \end{Verbatim}
-    \item \textbf{List all files of a package:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{user}{user\$} \textcolor{command}{pacman} -Ql <PACKAGE>
-\end{Verbatim}
     \item \textbf{Show which package own the file:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{user}{user\$} \textcolor{command}{pacman} -Qo <FILE>
+\end{Verbatim}
+    \item \textbf{List all files of an installed package:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Ql <PACKAGE>
+\end{Verbatim}
+    \item \textbf{List all files of a remote package:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Fyy
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Fl <PACKAGE>
 \end{Verbatim}
 \end{itemize}
 
@@ -1179,6 +1199,69 @@ Recommended DNS resolvers: \url{https://www.privacytools.io/#dns}
 \textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -Rns <PACKAGE>
 \end{Verbatim}
 \end{itemize}
+
+
+\chapter{AUR}
+\section{Setting Up}
+\begin{enumerate}
+    \item \textbf{Install dependencies:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] base-devel
+\end{Verbatim}
+    \item \textbf{Change compilation variables:}
+\newline File (\textbf{\textcolor{file}{/etc/makepkg.conf}}):
+\begin{Verbatim}[commandchars=\\\{\}]
+...
+MAKEFLAGS="-j\$(nproc)"
+...
+\end{Verbatim}
+    \item \textbf{Create directory for AUR packages:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{mkdir} <\textcolor{dir}{/etc/AUR/}>
+\end{Verbatim}
+    \item \textbf{Transfer directory ownership to doas group:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{chown} -R :doas <\textcolor{dir}{/etc/AUR/}>
+\end{Verbatim}
+    \item \textbf{Make directory writable for doas group:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{chmod} -R 0775 <\textcolor{dir}{/etc/AUR/}>
+\end{Verbatim}
+\end{enumerate}
+
+\section{Install Package}
+\begin{enumerate}
+    \item \textbf{Find package in AUR repository:}
+\newline \url{https://aur.archlinux.org/}
+    \item \textbf{Clone AUR package to AUR directory:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{git} clone <\underline{\href{https://aur.archlinux.org/bvi.git}{https://aur.archlinux.org/bvi.git}}> <\textcolor{dir}{/etc/AUR/bvi/}>
+\end{Verbatim}
+    \item \textbf{Go to cloned directory:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{cd} <\textcolor{dir}{/etc/AUR/bvi/}>
+\end{Verbatim}
+    \item \textbf{Check AUR package content:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{less} \textcolor{file}{./PKGBUILD}
+\end{Verbatim}
+    \item \textbf{Compile package:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{makepkg} -si
+\end{Verbatim}
+    \item \textbf{If there was GPG key fault:}
+    \begin{enumerate}
+        \item \textbf{Import key:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{gpg} --recv-keys <KEY>
+\end{Verbatim}
+        \item \textbf{Compile again:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{makepkg} -si
+\end{Verbatim}
+    \end{enumerate}
+\end{enumerate}
+
 
 \chapter{Zsh \& Vim}
 \section{Zsh}
