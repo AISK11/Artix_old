@@ -931,7 +931,7 @@ en_US ISO-885-1
 \end{enumerate}
 
 \section{CLI Keyboard}
-Dracut initramfs will include keymap and font on regeneration!
+Dracut initramfs will include keymap and font on re-generation!
 \begin{itemize}
     \item \textbf{Keymap:}
     \begin{enumerate}
@@ -1087,13 +1087,109 @@ Recommended DNS resolvers: \url{https://www.privacytools.io/#dns}
 \section{Bluetooth @TODO}
 
 
-
-
-
 \chapter{Pacman}
+\section{Files}
+\begin{itemize}
+    \item \textbf{Configuration:}
+    \begin{itemize}
+        \item \textbf{\textcolor{file}{/etc/pacman.conf}}
+    \end{itemize}
+    \item \textbf{Mirrors:}
+    \begin{itemize}
+        \item \textbf{\textcolor{file}{/etc/pacman.d/mirrorlist}}
+        \item \textbf{\textcolor{file}{/etc/pacman.d/mirrorlist-arch}}
+    \end{itemize}
+\end{itemize}
+\section{Update System}
+\begin{enumerate}
+    \item \textbf{Synchronize DB and upgrade pkgs:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -Syyu
+\end{Verbatim}
+    \item \textbf{Remove all files from cache:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -Scc
+\end{Verbatim}
+\end{enumerate}
 
+\section{Install Packages}
+\begin{enumerate}
+    \item \textbf{Search for a package:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Ss[q] <REGEX>
+\end{Verbatim}
+    \item \textbf{Show info about package:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Sii <PACKAGE>
+\end{Verbatim}
+    \item \textbf{Install package:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [-needed] <PACKAGE>
+\end{Verbatim}
+\end{enumerate}
+
+\section{List Packages}
+\begin{itemize}
+    \item \textbf{List all installed packages:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Q[q]
+\end{Verbatim}
+    \item \textbf{List explicitly installed packages:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Qe[q]
+\end{Verbatim}
+    \item \textbf{List installed dependency packages:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Qd[q]
+\end{Verbatim}
+    \item \textbf{List unrequired [optional] dependencies:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Qdt[t][q]
+\end{Verbatim}
+    \item \textbf{Search within locally installed packages:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Qs[q] <REGEX>
+\end{Verbatim}
+    \item \textbf{Show info about installed package:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Qii <PACKAGE>
+\end{Verbatim}
+\end{itemize}
+
+\section{Package Files}
+\begin{itemize}
+    \item \textbf{Check for missing files:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Qk[k] [PACKAGE]
+\end{Verbatim}
+    \item \textbf{List all files of a package:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Ql <PACKAGE>
+\end{Verbatim}
+    \item \textbf{Show which package own the file:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{pacman} -Qo <FILE>
+\end{Verbatim}
+\end{itemize}
+
+\section{Remove Packages}
+\begin{itemize}
+    \item \textbf{Uninstall package with dependencies and config files):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -Rns <PACKAGE>
+\end{Verbatim}
+\end{itemize}
 
 \chapter{Zsh \& Vim}
+\section{Zsh}
+\begin{enumerate}
+    \item \textbf{Install packages:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S zsh zsh-syntax-highlighting zsh-autosuggestions
+[zsh-completions]
+\end{Verbatim}
+\end{enumerate}
+
 
 
 \chapter{Anonymity \& Security}
