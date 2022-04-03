@@ -596,7 +596,7 @@ network=\{
     \item \textbf{Networking:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S ethtool wpa_supplicant
-wpa_supplicant-dinit dhcpcd dhcpcd-dinit
+wpa_supplicant-dinit [iw] dhcpcd dhcpcd-dinit
 \end{Verbatim}
 \end{itemize}
 
@@ -1044,6 +1044,7 @@ FONT=eurlatgr
     \item \textbf{Show current wireless link status:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{wpa_cli} status
+\textcolor{root}{root#} \textcolor{command}{iw} <wlan0> link
 \end{Verbatim}
     \item \textbf{Scan networks:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -1280,7 +1281,7 @@ EDITOR="/bin/vim"
 \end{Verbatim}
     \item \textbf{Configuration: @TODO}
 \newline File (\textbf{\textcolor{file}{\texttildelow/.vimrc}}):
-\newline \url{}
+\newline \url{https://github.com/AISK11/Artix/blob/main/dotfiles/.vimrc}
 \end{enumerate}
 
 \section{Bvi}
@@ -1292,7 +1293,7 @@ EDITOR="/bin/vim"
     \end{itemize}
     \item \textbf{Configuration:}
 \newline File (\textbf{\textcolor{file}{\texttildelow/.bvirc}}):
-\newline \url{}
+\newline \url{https://github.com/AISK11/Artix/blob/main/dotfiles/.bvirc}
 \end{enumerate}
 
 \section{Zsh}
@@ -1316,7 +1317,7 @@ EDITOR="/bin/vim"
     \end{itemize}
     \item \textbf{Configuration: @TODO}
 \newline File (\textbf{\textcolor{file}{\texttildelow/.zshrc}}):
-\newline \url{}
+\newline \url{https://github.com/AISK11/Artix/blob/main/dotfiles/.zshrc}
 \end{enumerate}
 
 
