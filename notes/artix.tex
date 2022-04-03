@@ -1202,6 +1202,7 @@ Recommended DNS resolvers: \url{https://www.privacytools.io/#dns}
 
 
 \chapter{AUR}
+\label{AUR}
 \section{Setting Up}
 \begin{enumerate}
     \item \textbf{Install dependencies:}
@@ -1264,6 +1265,36 @@ MAKEFLAGS="-j\$(nproc)"
 
 
 \chapter{Zsh \& Vim}
+\section{Vim}
+\begin{enumerate}
+    \item \textbf{Create symlink for visudo (ignores EDITOR and VISUAL):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{ln} -sf <\textcolor{file}{/usr/bin/vim}> /usr/bin/vi
+\end{Verbatim}
+    \item \textbf{Set as default editor:}
+\newline File (\textbf{\textcolor{file}{/etc/profile}}):
+\begin{Verbatim}[commandchars=\\\{\}]
+...
+VISUAL="/bin/vim"
+EDITOR="/bin/vim"
+\end{Verbatim}
+    \item \textbf{Configuration: @TODO}
+\newline File (\textbf{\textcolor{file}{\texttildelow/.vimrc}}):
+\newline \url{}
+\end{enumerate}
+
+\section{Bvi}
+\begin{enumerate}
+    \item \textbf{Install:}
+    \begin{itemize}
+        \item \url{https://aur.archlinux.org/packages/bvi/}
+        \item \textbf{See: \underline{\ref{AUR}}.}
+    \end{itemize}
+    \item \textbf{Configuration:}
+\newline File (\textbf{\textcolor{file}{\texttildelow/.bvirc}}):
+\newline \url{}
+\end{enumerate}
+
 \section{Zsh}
 \begin{enumerate}
     \item \textbf{Install packages:}
@@ -1271,6 +1302,21 @@ MAKEFLAGS="-j\$(nproc)"
 \textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S zsh zsh-syntax-highlighting zsh-autosuggestions
 [zsh-completions]
 \end{Verbatim}
+    \item \textbf{Set as default shell:}
+    \begin{itemize}
+        \item \textbf{User by user:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{chsh} -l
+\textcolor{user}{user\$} \textcolor{command}{chsh} -s <\textcolor{file}{/bin/zsh}>
+\end{Verbatim}
+        \item \textbf{User by root:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{usermod} -s <\textcolor{file}{/bin/zsh}> <USER>
+\end{Verbatim}
+    \end{itemize}
+    \item \textbf{Configuration: @TODO}
+\newline File (\textbf{\textcolor{file}{\texttildelow/.zshrc}}):
+\newline \url{}
 \end{enumerate}
 
 
