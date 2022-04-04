@@ -1,19 +1,16 @@
 "" LOCATION:     ~/.bvirc
 "" AUTHOR:       AISK11
-"" VERSION:      1.0.0
+"" VERSION:      1.0.1
 "" CREATED:      2022-04-04
 "" UPDATED:      2022-04-04
 "" DESCRIPTION:  Configuration file for bvi (binary vi) text editor.
 "" DEPENDENCIES: https://aur.archlinux.org/packages/bvi/
 
-"""""""""""""
-""  DOCS   ""
-"""""""""""""
 "" http://bvi.sourceforge.net/set.html
 
-"""""""""""""
-"" OPTIONS ""
-"""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""                                  OPTIONS                                   ""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" Enable edit:
 set memmove
 
