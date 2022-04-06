@@ -894,7 +894,7 @@ Valid hostname characters: \textbf{a-z}, \textbf{0-9} and hyphens (\textbf{-}), 
 \end{Verbatim}
         \item \textbf{ISO 8601 (YYYY-MM-DDThh:mm:ss(+|-)xx:xx):}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{user}{user\$} \textcolor{command}{date} +'\%Y-\%m-\%dT\%H:\%M:\%S\%:z'
+\textcolor{user}{user\$} \textcolor{command}{date} '+\%Y-\%m-\%dT\%H:\%M:\%S\%:z'
 \end{Verbatim}
     \end{itemize}
     \item \textbf{Set time:}
@@ -1219,15 +1219,15 @@ MAKEFLAGS="-j\$(nproc)"
 \end{Verbatim}
     \item \textbf{Create directory for AUR packages:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{mkdir} <\textcolor{dir}{/etc/AUR/}>
+\textcolor{root}{root#} \textcolor{command}{mkdir} <\textcolor{dir}{/aur/}>
 \end{Verbatim}
     \item \textbf{Transfer directory ownership to doas group:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{chown} -R :doas <\textcolor{dir}{/etc/AUR/}>
+\textcolor{root}{root#} \textcolor{command}{chown} -R :doas <\textcolor{dir}{/aur/}>
 \end{Verbatim}
     \item \textbf{Make directory writable for doas group:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{chmod} -R 0775 <\textcolor{dir}{/etc/AUR/}>
+\textcolor{root}{root#} \textcolor{command}{chmod} -R 0775 <\textcolor{dir}{/aur/}>
 \end{Verbatim}
 \end{enumerate}
 
@@ -1237,11 +1237,11 @@ MAKEFLAGS="-j\$(nproc)"
 \newline \url{https://aur.archlinux.org/}
     \item \textbf{Clone AUR package to AUR directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{user}{user\$} \textcolor{command}{git} clone <\underline{\href{https://aur.archlinux.org/bvi.git}{https://aur.archlinux.org/bvi.git}}> <\textcolor{dir}{/etc/AUR/bvi/}>
+\textcolor{user}{user\$} \textcolor{command}{git} clone <\underline{\href{https://aur.archlinux.org/bvi.git}{https://aur.archlinux.org/bvi.git}}> <\textcolor{dir}{/aur/bvi/}>
 \end{Verbatim}
     \item \textbf{Go to cloned directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{user}{user\$} \textcolor{command}{cd} <\textcolor{dir}{/etc/AUR/bvi/}>
+\textcolor{user}{user\$} \textcolor{command}{cd} <\textcolor{dir}{/aur/bvi/}>
 \end{Verbatim}
     \item \textbf{Check AUR package content:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -1265,8 +1265,8 @@ MAKEFLAGS="-j\$(nproc)"
 \end{enumerate}
 
 
-\chapter{Zsh \& Vim}
-\section{Vim}
+\chapter{Zsh \& Vim @WIP}
+\section{Vim @WIP}
 \begin{enumerate}
     \item \textbf{Create symlink for visudo (ignores EDITOR and VISUAL):}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -1296,7 +1296,7 @@ EDITOR="/bin/vim"
 \newline \url{https://github.com/AISK11/Artix/blob/main/dotfiles/.bvirc}
 \end{enumerate}
 
-\section{Zsh}
+\section{Zsh @WIP}
 \begin{enumerate}
     \item \textbf{Install packages:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -1321,11 +1321,23 @@ EDITOR="/bin/vim"
 \end{enumerate}
 
 
+\chapter{Xorg}
+
 
 \chapter{Anonymity \& Security}
 
 
-\chapter{Xen}
+\chapter{Xen???}
+\begin{itemize}
+    \item \url{https://wiki.archlinux.org/title/Xen}
+    \item \url{https://aur.archlinux.org/xen.git}
+\end{itemize}
+\begin{Verbatim}[commandchars=\\\{\}]
+/etc/AUR/xen/pkg/xen/boot/xen.gz
+/etc/AUR/xen/pkg/xen/boot/xen.efi
+/etc/AUR/xen/xen.conf
+\end{Verbatim}
+
 
 
 \chapter{Quick Reference}
