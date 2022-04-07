@@ -1,8 +1,8 @@
 ## LOCATION:     ~/.zshrc
 ## AUTHOR:       AISK11
-## VERSION:      1.1.3
+## VERSION:      1.1.4
 ## CREATED:      2022-04-04
-## UPDATED:      2022-04-07
+## UPDATED:      2022-04-08
 ## DESCRIPTION:  Configuration file for bvi (binary vi) text editor.
 ## DEPENDENCIES: zsh [zsh-syntax-highlighting] [zsh-autosuggestions] [zsh-completions]
 
@@ -218,7 +218,7 @@ alias dmesg="dmesg --color=${COLOR_MODE}"
 alias tree='tree -C'
 
 ## Aliases.
-alias mtr='mtr -r'
+alias mtr='mtr -t'
 
 ########################################
 ##             FUNCTIONS              ##

@@ -833,6 +833,10 @@ permit nopass :doas
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] htop neofetch ncdu tree
 \end{Verbatim}
+    \item \textbf{Networking:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] mtr
+\end{Verbatim}
 \end{itemize}
 
 
@@ -1342,17 +1346,9 @@ zsh-autosuggestions [zsh-completions]
 \end{enumerate}
 
 
-\chapter{Programming \& Development @TODO}
-\section{Git}
-\subsection{Configuration}
-\begin{enumerate}
-    \item \textbf{Change default branch from 'master' to 'main':}
-\end{enumerate}
-
-\section{Atom}
 
 
-\chapter{Audio}
+\chapter{Audio @WIP}
 \section{Install}
 \begin{enumerate}
     \item \textbf{Install:}
@@ -1415,10 +1411,15 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 \end{Verbatim}
         \item \textbf{Nvidia:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{nvtop} [-d <TENTHS_OF_A_SECOND>]
+\textcolor{user}{user\$} \textcolor{command}{nvtop} [-d <TENTHS_OF_A_SECOND>]
+\textcolor{user}{user\$} \textcolor{command}{nvidia-settings}
 \end{Verbatim}
     \end{itemize}
 \end{enumerate}
+
+\section{Touchpad Drivers}
+
+\section{Dual GPU Offloading}
 
 \section{Xorg}
 \begin{enumerate}
@@ -1430,17 +1431,24 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 
 
 \chapter{I3}
-
-
 \section{I3}
 \begin{enumerate}
     \item \textbf{Install:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] i3-gaps
-\end{Verbatim}    
-    
+\end{Verbatim}
+    \item \textbf{Run i3 after Xorg:}
+\newline File (\textbf{\textcolor{file}{\texttildelow/.xinitrc}}):
+\newline \url{https://github.com/AISK11/Artix/blob/main/dotfiles/.xinitrc}
+    \item \textbf{Configuration:}
+\newline File (\textbf{\textcolor{file}{\texttildelow/.config/i3/config}}):
+\newline \url{}    
 \end{enumerate}
 
+\section{I3 Tools}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] feh
+\end{Verbatim}
 
 
 
@@ -1449,9 +1457,15 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 
 
 
-\section{Dual GPU Offloading}
 
+\chapter{Programming \& Development @TODO}
+\section{Git}
+\subsection{Configuration}
+\begin{enumerate}
+    \item \textbf{Change default branch from 'master' to 'main':}
+\end{enumerate}
 
+\section{Atom}
 
 \chapter{Additional Software}
 \section{Fosscord (Discord Client)}
