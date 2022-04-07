@@ -1,6 +1,6 @@
 ## LOCATION:     ~/.zshrc
 ## AUTHOR:       AISK11
-## VERSION:      1.1.1
+## VERSION:      1.1.2
 ## CREATED:      2022-04-04
 ## UPDATED:      2022-04-07
 ## DESCRIPTION:  Configuration file for bvi (binary vi) text editor.
@@ -198,6 +198,9 @@ setopt PUSHD_SILENT
 ## Add access to root binaries.
 export PATH="${PATH}:/sbin:/usr/sbin"
 
+## Interpret colors in 'less'.
+export LESS='-R --use-color -Dd+r$Du+b'
+
 ########################################
 ##              ALIASES               ##
 ########################################
@@ -212,9 +215,6 @@ alias egrep="egrep --color=${COLOR_MODE}"
 alias diff="diff --color=${COLOR_MODE}"
 alias ip="ip --color=${COLOR_MODE}"
 alias dmesg="dmesg --color=${COLOR_MODE}"
-
-## Interpret colors in 'less'.
-export LESS='-R --use-color -Dd+r$Du+b'
 
 ## Aliases.
 alias mtr='mtr -r'
