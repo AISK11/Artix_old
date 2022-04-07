@@ -547,7 +547,7 @@ network=\{
 \end{Verbatim}
     \item \textbf{Pacman configuration:}
 \newline File (\textbf{\textcolor{file}{/etc/pacman.conf}}):
-\newline \url{https://github.com/AISK11/Artix/blob/main/configs/pacman/pacman.conf}
+\newline \url{https://github.com/AISK11/Artix/blob/main/configs/artix/pacman.conf}
     \item \textbf{Synchronize new repos [and update]:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{pacman} -Syy[u]
@@ -719,8 +719,12 @@ menuentry "Artix" \{
     icon    /EFI/BOOT/themes/refind-theme/icons/128-48/os_artix.png
     loader  /EFI/artix/vmlinuz-linux
     options "initrd=/EFI/artix/intel-ucode.img \char92
-    initrd=/EFI/artix/initramfs-linux.img \char92
-    rw root=/dev/mapper/luks-root quiet"
+    initrd=/EFI/artix/initramfs-linux.img rw root=/dev/mapper/luks-root quiet"
+    submenuentry "Debug" \{
+        options "initrd=/EFI/artix/intel-ucode.img \char92
+        initrd=/EFI/artix/initramfs-linux.img rw root=/dev/mapper/luks-root \char92
+        rd.debug"
+    \}
     #disabled
 \}
 \end{Verbatim}
@@ -916,7 +920,7 @@ Valid hostname characters: \textbf{a-z}, \textbf{0-9} and hyphens (\textbf{-}), 
     \item \textbf{Supported locales:}
 \newline \textbf{\textcolor{dir}{/usr/share/i18n/locales/}}
     \item \textbf{Choose locales:}
-\item File (\textbf{\textcolor{file}{/etc/locale.gen}}):
+\newline File (\textbf{\textcolor{file}{/etc/locale.gen}}):
 \begin{Verbatim}[commandchars=\\\{\}]
 ...
 en_DK.UTF-8 UTF-8
@@ -977,7 +981,7 @@ KEYMAP=us
 \textcolor{user}{user\$} \textcolor{command}{setfont} <lat2-16>
 \end{Verbatim}
             \item \textbf{Permanently:}
-\newline File (\textcolor{file}{/etc/vconsole.font}):
+\newline File (\textbf{\textcolor{file}{/etc/vconsole.font}}):
 \begin{Verbatim}[commandchars=\\\{\}]
 FONT=eurlatgr
 \end{Verbatim}
@@ -1018,10 +1022,10 @@ FONT=eurlatgr
 \textcolor{root}{root#} \textcolor{command}{ethtool} <eth0>
 \end{Verbatim}
 \end{enumerate}
-\section{WLAN}
+\section{Wi-Fi}
 \subsection{Set up interface:}
 \begin{enumerate}
-    \item \textbf{Unblock WLAN in rfkill:}
+    \item \textbf{Unblock Wi-Fi in rfkill:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{rfkill} unblock wlan
 \end{Verbatim}
