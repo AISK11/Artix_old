@@ -301,11 +301,11 @@ network=\{
 \begin{enumerate}
     \item \textbf{Synchronize database:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{yes} | \textcolor{command}{pacman} -Syy
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -Syy
 \end{Verbatim}
     \item \textbf{Install parted:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{yes} | \textcolor{command}{pacman} -S parted
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] parted
 \end{Verbatim}
 \end{enumerate}
 
@@ -543,14 +543,14 @@ network=\{
 \begin{enumerate}
     \item \textbf{Add additional Arch packages:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S artix-archlinux-support
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] artix-archlinux-support
 \end{Verbatim}
     \item \textbf{Pacman configuration:}
 \newline File (\textbf{\textcolor{file}{/etc/pacman.conf}}):
 \newline \url{https://github.com/AISK11/Artix/blob/main/configs/artix/pacman.conf}
     \item \textbf{Synchronize new repos [and update]:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} \textcolor{command}{pacman} -Syy[u]
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -Syy[u]
 \end{Verbatim}
 \end{enumerate}
 
@@ -558,44 +558,45 @@ network=\{
 \begin{itemize}
     \item \textbf{Text editor:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S vim
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] vim
 \end{Verbatim}
     \item \textbf{Git:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S git
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] git
 \end{Verbatim}
     \item \textbf{Partitioning}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S parted
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] parted
 \end{Verbatim}
     \item \textbf{Filesystems:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S dosfstools cryptsetup btrfs-progs
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] dosfstools cryptsetup
+btrfs-progs
 \end{Verbatim}
     \item \textbf{Bootloader:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S refind
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] refind
 \end{Verbatim}
      \item \textbf{Initramfs:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -Rns mkinitcpio
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S dracut
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] dracut
 \end{Verbatim}
     \item \textbf{Microcode:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S intel-ucode
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] intel-ucode
 \end{Verbatim}
     \item \textbf{Kernel and drivers:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S linux linux-firmware
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] linux linux-firmware
 \end{Verbatim}
     \item \textbf{Init:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S dinit elogind elogind-dinit
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] dinit elogind elogind-dinit
 \end{Verbatim}
     \item \textbf{Networking:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S ethtool wpa_supplicant
+\textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] ethtool wpa_supplicant
 wpa_supplicant-dinit [iw] dhcpcd dhcpcd-dinit
 \end{Verbatim}
 \end{itemize}
@@ -786,7 +787,7 @@ blacklist pcspkr
 \begin{enumerate}
     \item \textbf{Install doas:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} [\textcolor{command}{yes}] | \textcolor{command}{pacman} -S opendoas
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] opendoas
 \textcolor{root}{root#} [\textcolor{command}{yes}] | \textcolor{command}{pacman} -Rns sudo
 \end{Verbatim}
     \item \textbf{Create symlink for apps that needs sudo:}
@@ -820,51 +821,21 @@ permit nopass :doas
 \end{enumerate}
 
 
-\chapter{Dinit}
-\section{List services}
+\chapter{Additional Basic Tools}
 \begin{itemize}
-    \item \textbf{List all services:}
-\newline \textbf{\textcolor{dir}{/etc/dinit.d/}}
-    \item \textbf{List all loaded services:}
+    \item \textbf{Manuals:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dinitctl} list
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] man-db man-pages tldr
+\textcolor{user}{user\$} \textcolor{command}{tldr} -u
 \end{Verbatim}
-    \item \textbf{Status of a service:}
+    \item \textbf{Hardware monitoring:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dinitctl} status <SERVICE>
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] usbutils inxi
 \end{Verbatim}
-\end{itemize}
-
-\section{Start/Stop}
-\begin{itemize}
-    \item \textbf{Start service:}
+    \item \textbf{System monitoring:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dinitctl} start <SERVICE>
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] htop neofetch ncdu
 \end{Verbatim}
-    \item \textbf{Stop service:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dinitctl} stop <SERVICE>
-\end{Verbatim}
-\end{itemize}
-
-\section{Enable/Disable}
-\begin{itemize}
-    \item \textbf{List enabled services:}
-\newline \textbf{\textcolor{dir}{/etc/dinit.d/boot.d/}}
-    \item \textbf{Enable service on startup:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dinitctl} enable <SERVICE>
-\end{Verbatim}
-    \item \textbf{Disable service on startup:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dinitctl} disable <SERVICE>
-\end{Verbatim}
-\end{itemize}
-
-\section{Logs}
-\begin{itemize}
-    \item \textbf{See logs for services:}
-\newline \textbf{\textcolor{dir}{/var/log/dinit/}}
 \end{itemize}
 
 
@@ -991,6 +962,54 @@ FONT=eurlatgr
 \textcolor{root}{root#} \textcolor{command}{reboot}
 \end{Verbatim}
     \end{enumerate}
+\end{itemize}
+
+
+\chapter{Dinit}
+\section{List services}
+\begin{itemize}
+    \item \textbf{List all services:}
+\newline \textbf{\textcolor{dir}{/etc/dinit.d/}}
+    \item \textbf{List all loaded services:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} list
+\end{Verbatim}
+    \item \textbf{Status of a service:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} status <SERVICE>
+\end{Verbatim}
+\end{itemize}
+
+\section{Start/Stop}
+\begin{itemize}
+    \item \textbf{Start service:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} start <SERVICE>
+\end{Verbatim}
+    \item \textbf{Stop service:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} stop <SERVICE>
+\end{Verbatim}
+\end{itemize}
+
+\section{Enable/Disable}
+\begin{itemize}
+    \item \textbf{List enabled services:}
+\newline \textbf{\textcolor{dir}{/etc/dinit.d/boot.d/}}
+    \item \textbf{Enable service on startup:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} enable <SERVICE>
+\end{Verbatim}
+    \item \textbf{Disable service on startup:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} disable <SERVICE>
+\end{Verbatim}
+\end{itemize}
+
+\section{Logs}
+\begin{itemize}
+    \item \textbf{See logs for services:}
+\newline \textbf{\textcolor{dir}{/var/log/dinit/}}
 \end{itemize}
 
 
@@ -1144,7 +1163,7 @@ Recommended DNS resolvers: \url{https://www.privacytools.io/#dns}
 \end{Verbatim}
     \item \textbf{Install package:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [-needed] <PACKAGE>
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] <PACKAGE>
 \end{Verbatim}
 \end{enumerate}
 
@@ -1304,8 +1323,8 @@ EDITOR="/bin/vim"
 \begin{enumerate}
     \item \textbf{Install packages:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S zsh zsh-syntax-highlighting zsh-autosuggestions
-[zsh-completions]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] zsh zsh-syntax-highlighting
+zsh-autosuggestions [zsh-completions]
 \end{Verbatim}
     \item \textbf{Set as default shell:}
     \begin{itemize}
@@ -1325,10 +1344,65 @@ EDITOR="/bin/vim"
 \end{enumerate}
 
 
-\chapter{Xorg}
+\chapter{Xorg + i3 @WIP}
+\section{GPU Drivers}
+\begin{enumerate}
+    \item \textbf{Detect GPUs:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{lspci} -v | \textcolor{command}{grep} -i -e 'VGA' -e '3D'
+\end{Verbatim}
+    \item \textbf{Install drivers:}
+    \begin{itemize}
+        \item \textbf{Intel (open source):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] xf86-video-intel mesa lib32-mesa
+vulkan-intel lib32-vulkan-intel
+\end{Verbatim}
+        \item \textbf{Nvidia (proprietary):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] nvidia nvidia-utils lib32-nvidia-utils
+\end{Verbatim}
+    \end{itemize}
+\end{enumerate}
+
+\section{Xorg}
+\begin{enumerate}
+    \item \textbf{Install:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] xorg xorg-drivers xorg-xinit
+\end{Verbatim}
+\end{enumerate}
+
+\section{I3}
+\begin{enumerate}
+    \item \textbf{Install:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] i3-gaps
+\end{Verbatim}
+
+\end{enumerate}
+
+
+\section{Dual GPU Offloading}
+
+
+
+\chapter{Additional Software}
+
+
 
 
 \chapter{Anonymity \& Security}
+\begin{Verbatim}[commandchars=\\\{\}]
+motd /etc/issue
+
+usbguard
+macchanger
+nftables
+
+\end{Verbatim}
+
+
 
 
 \chapter{Xen???}
@@ -1401,5 +1475,17 @@ EDITOR="/bin/vim"
         \item \url{https://wiki.artixlinux.org/Main/Elogind}
         \item \url{https://wiki.gentoo.org/wiki/Elogind}
     \end{itemize}
+\end{itemize}
+
+\section{X11 and WM}
+\begin{itemize}
+    \item \textbf{Xorg:}
+    \begin{itemize}
+        \item \textbf{https://wiki.archlinux.org/title/Xorg}
+    \end{itemize}
+    \item \textbf{i3:}
+        \begin{itemize}
+            \item \textbf{https://wiki.archlinux.org/title/I3}
+        \end{itemize}
 \end{itemize}
 \end{document}
