@@ -1,6 +1,6 @@
 ## LOCATION:     ~/.zshrc
 ## AUTHOR:       AISK11
-## VERSION:      1.1.0
+## VERSION:      1.1.1
 ## CREATED:      2022-04-04
 ## UPDATED:      2022-04-07
 ## DESCRIPTION:  Configuration file for bvi (binary vi) text editor.
@@ -213,7 +213,7 @@ alias diff="diff --color=${COLOR_MODE}"
 alias ip="ip --color=${COLOR_MODE}"
 alias dmesg="dmesg --color=${COLOR_MODE}"
 
-## Interpret colors in 'less':
+## Interpret colors in 'less'.
 export LESS='-R --use-color -Dd+r$Du+b'
 
 ## Aliases.
@@ -222,7 +222,7 @@ alias mtr='mtr -r'
 ########################################
 ##             FUNCTIONS              ##
 ########################################
-## See how much RAM process uses:
+## See how much RAM process uses.
 ## Usage: $(mem <REGEX>)
 mem()
 {
