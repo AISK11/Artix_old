@@ -1,8 +1,8 @@
 "" LOCATION:     ~/.vimrc
 "" AUTHOR:       AISK11
-"" VERSION:      1.0.0
+"" VERSION:      1.0.2
 "" CREATED:      2022-04-04
-"" UPDATED:      2022-04-04
+"" UPDATED:      2022-04-07
 "" DESCRIPTION:  Configuration file for vim text editor.
 "" DEPENDENCIES: vim
 
@@ -11,7 +11,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""                                   SOUND                                    ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Turn off all sound:
+"" Turn off all sound.
 set noerrorbells
 set novisualbell
 set t_vb=
@@ -21,7 +21,7 @@ set tm=500
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""                                  BACKUPS                                   ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Turn off file backup:
+"" Turn off file backup.
 set nobackup
 set nowb
 set noswapfile
@@ -30,18 +30,18 @@ set noswapfile
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""                               TAB and SPACES                               ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Preserve indentation on new line:
+"" Preserve indentation on new line.
 set autoindent
 
-"" If set, replaces tabs with spaces:
+"" If set, replaces tabs with spaces.
 "set expandtab
 
-"" Tab = 4 chars:
+"" Tab = 4 chars.
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 
-""" For specific file types, set different tab space:
+""" For specific file types, set different tab space.
 autocmd FileType html   setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType css    setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
@@ -50,41 +50,41 @@ autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""                                 STATUSLINE                                 ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Always show status line:
+"" Always show status line.
 set laststatus=2
 
-"" Statusline:
+"" Statusline.
 set statusline=%F\ %p%%\ [%l:%c]\ %M\ %R\ %Y\ %y
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""                                 SCROLLING                                  ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Start scrolling N lines before reaches last line:
+"" Start scrolling N lines before reaches last line.
 set scrolloff=4
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""                                   SEARCH                                   ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Highlight search results:
+"" Highlight search results.
 set hlsearch
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""                                LINE NUMBERS                                ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Number lines:
+"" Number lines.
 set number
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""                                   SYNTAX                                   ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Enable syntax highlighting:
+"" Enable syntax highlighting.
 syntax on
 
-"" Highlight trailing whitespace:
+"" Highlight trailing whitespace.
 :highlight ExtraWhitespace ctermbg=red guibg=red
 :match ExtraWhitespace /\s\+$/
 
@@ -92,5 +92,5 @@ syntax on
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""                             HIGHLIGHT BRACKETS                             ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" When inserted bracket, briefly jump to matching one (is is on the screen):
+"" When inserted bracket, briefly jump to matching one (is is on the screen).
 "set showmatch

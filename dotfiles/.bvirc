@@ -1,8 +1,8 @@
 "" LOCATION:     ~/.bvirc
 "" AUTHOR:       AISK11
-"" VERSION:      1.0.1
+"" VERSION:      1.0.2
 "" CREATED:      2022-04-04
-"" UPDATED:      2022-04-04
+"" UPDATED:      2022-04-07
 "" DESCRIPTION:  Configuration file for bvi (binary vi) text editor.
 "" DEPENDENCIES: https://aur.archlinux.org/packages/bvi/
 
@@ -11,8 +11,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""                                  OPTIONS                                   ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" Enable edit:
+"" Enable edit.
 set memmove
 
-"" Show status message bar at the bottom:
+"" Show status message bar at the bottom.
 set showmode
