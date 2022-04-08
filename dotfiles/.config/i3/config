@@ -1,10 +1,10 @@
 ## LOCATION:     ~/.config/i3/config
 ## AUTHOR:       AISK11
-## VERSION:      0.1.0
+## VERSION:      0.2.0
 ## CREATED:      2022-04-08
 ## UPDATED:      2022-04-08
 ## DESCRIPTION:  Configuration file xinit.
-## DEPENDENCIES: i3-gaps [ttf-dejavu] [ttf-fira-mono] [feh] [light] [rxvt-unicode]
+## DEPENDENCIES: i3-gaps ttf-dejavu ttf-fira-mono feh rxvt-unicode numlockx
 
 ################################################################################
 ##                                   IMAGES                                   ##
@@ -56,14 +56,261 @@ font pango:Fira Mono 11, DejaVu Sans Mono 11
 ########################################
 #
 
+########################################
+##             I3 COLORS              ##
+########################################
+## Basic colors.
+set $yellow #f5cd7b
+set $red    #ef2929
+set $blue   #548cff
+set $green  #4e9a06
+set $grey   #707070
+set $dark   #222831
+
+## Colos scheme wor windows.
+set $selected-color   $yellow
+set $unselected-color $grey
+set $urgent-color     $red
+set $bar-bg           $dark
+
+## Windows colors.
+client.focused              #000000    $selected-color    #000000     $urgent-color
+client.unfocused            #000000    $unselected-color  #000000     #000000
+client.focused_inactive     #000000    $unselected-color  #000000     #000000
+client.urgent               #000000    $urgent-color      #000000     #000000
+
+## Bar.
+bar {
+        #status_command i3blocks -c ~/.config/i3/i3blocks/i3blocks.conf
+        position top
+        separator_symbol "|"
+        strip_workspace_numbers yes
+        colors {
+            background $bar-bg
+            separator $unselected-color
+            focused_workspace   $selected-color   $selected-color   $unselected-color
+            inactive_workspace  $unselected-color $unselected-color $selected-color
+            urgent_workspace    $urgent-color     $urgent-color     #ffffff
+        }
+}
 
 ################################################################################
 ##                                  KEYBOARD                                  ##
 ################################################################################
 ########################################
+##              LAYOUTS               ##
+########################################
+## Keyboard switching ('man xkeyboard-config').
+exec --no-startup-id setxkbmap -model pc105 -layout "us,sk" -variant ",qwerty" -option 'grp:shifts_toggle'
+
+########################################
 ##             SHORTCUTS              ##
 ########################################
+####################
+##    MOD KEY     ##
+####################
 ## Mod key: Windows key = Mod4, Alt key = Mod1.
 set $mod Mod4
 
-## Terminal (urxvt).
+####################
+##       I3       ##
+####################
+## Reload config file (refreshes screen if buggy).
+bindsym $mod+Shift+r reload
+
+## Restart i3 inplace (preserves your layout/session, can be used to upgrade i3).
+#bindsym $mod+Shift+c restart
+
+## Exit i3.
+#bindsym $mod+Shift+e exec killall -9 xinit
+
+####################
+##    TERMINAL    ##
+####################
+## Load terminal emulator settings.
+exec xrdb ~/.Xresources
+
+## Run terminal as daemon.
+exec --no-startup-id urxvtd --quiet --opendisplay --fork
+
+## Terminal (urxvt), Mod+ENTER.
+bindsym $mod+Return exec urxvt
+
+####################
+##    WINDOWS     ##
+####################
+## Kill focused window.
+bindsym $mod+Shift+q kill
+
+## Change focus.
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+semicolon focus right
+
+## Move focused windows.
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+semicolon focus right
+
+## Split new window (horizontally and vertically).
+bindsym $mod+h split h
+bindsym $mod+v split v
+
+## Toggle fullscreen.
+bindsym $mod+f fullscreen toggle
+
+## Toggle floating.
+#bindsym $mod+Shift+space floating toggle
+
+## Change focus between tiling/floating windows.
+#bindsym $mod+space focus mode_toggle
+
+## Change containter layout (stacked, tabbed, toggle split).
+#bindsym $mod+s layout stacking
+#bindsym $mod+w layout tabbed
+#bindsym $mod+e layout toggle split
+
+## Focus parent/child containter.
+#bindsym $mod+p focus parent
+## FOCUS CHILD CONTAINER.
+#bindsym $mod+c focus child
+
+## Resize window.
+mode "resize" {
+        ## These bindings trigger as soon as you enter the resize mode
+        ## Pressing left will shrink the window’s width.
+        ## Pressing right will grow the window’s width.
+        ## Pressing up will shrink the window’s height.
+        ## Pressing down will grow the window’s height.
+        #bindsym j resize shrink width 10 px or 10 ppt
+        #bindsym k resize grow height 10 px or 10 ppt
+        #bindsym l resize shrink height 10 px or 10 ppt
+        #bindsym semicolon resize grow width 10 px or 10 ppt
+        ## same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+        ## back to normal: Enter or Escape or $mod+r
+        #bindsym Return mode "default"
+        #bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+####################
+##   WORKSPACES   ##
+####################
+## CLI.
+set $ws1 "1"
+## Programming.
+set $ws2 "2"
+## Web Browser.
+set $ws3 "3"
+## Auxiliary - temporary apps.
+set $ws4 "4"
+## Networking + Virtualization.
+set $ws5 "5"
+## VM1.
+set $ws6 "6"
+## VM2.
+set $ws7 "7"
+## Security.
+set $ws8 "8"
+## Steam.
+set $ws9 "9"
+## Discord.
+set $ws10 "10"
+
+## Switch to workplace.
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+## Move focuse container to workplace.
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+####################
+##     SEARCH     ##
+####################
+#
+
+####################
+##   BRIGHTNESS   ##
+####################
+#
+
+####################
+##     AUDIO      ##
+####################
+#
+
+####################
+##  PRINT SCREEN  ##
+####################
+#
+
+################################################################################
+##                                  PROGRAMS                                  ##
+################################################################################
+########################################
+##             AUTOLAUNCH             ##
+########################################
+## Auto launch specified program in workspace. Find property with $(xprop), use 2nd variable of WM_CLASS
+## WS1.
+
+## WS2.
+
+## WS3.
+assign [class="firefox"] $ws3
+
+## WS4.
+
+## WS5.
+
+## WS6.
+
+## WS7.
+
+## WS8.
+assign [class="KeePassXC"] $ws8
+
+## WS9.
+assign [class="Steam"] $ws9
+
+## WS10.
+
+########################################
+##            RUN ON START            ##
+########################################
+## Start with numlock on.
+exec numlockx on
+
+## Allow GUI programs to be run by root.
+exec xhost local:root
