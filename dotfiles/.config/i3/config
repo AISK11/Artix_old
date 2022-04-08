@@ -1,10 +1,10 @@
 ## LOCATION:     ~/.config/i3/config
 ## AUTHOR:       AISK11
-## VERSION:      0.0.1
+## VERSION:      0.1.0
 ## CREATED:      2022-04-08
 ## UPDATED:      2022-04-08
 ## DESCRIPTION:  Configuration file xinit.
-## DEPENDENCIES: i3-gaps [feh]
+## DEPENDENCIES: i3-gaps [ttf-dejavu] [ttf-fira-mono] [feh] [light] [rxvt-unicode]
 
 ################################################################################
 ##                                   IMAGES                                   ##
@@ -13,9 +13,10 @@
 ##             WALLPAPER              ##
 ########################################
 ## Set static wallpaper.
-exec --no-startup-id feh --bg-scale ~/.config/i3/images/wallpaper.png
+set WALLPAPER="~/.config/i3/images/wallpaper.png"
+exec --no-startup-id feh --bg-scale $WALLPAPER
 
-## Redner wallpaper nicely.
+## Render wallpaper nicely.
 exec --no-startup-id bash ${HOME}/.fehbg
 
 ########################################
@@ -25,13 +26,7 @@ exec --no-startup-id bash ${HOME}/.fehbg
 
 
 ################################################################################
-##                                 COMPOSITOR                                 ##
-################################################################################
-#
-
-
-################################################################################
-##                                     i3                                     ##
+##                                 I3 DESIGN                                  ##
 ################################################################################
 ########################################
 ##              WINDOWS               ##
@@ -45,3 +40,30 @@ smart_gaps on
 
 ## Window border size in pixels.
 default_border pixel 1
+
+## Window border size for special windows.
+#for_window [class="."] border pixel 3
+
+########################################
+##                FONT                ##
+########################################
+## Find font with $(pango-list).
+## Example: font pango:[family list] [style options] [size][, [fallback family list] [fallback style options] [fallback size]]
+font pango:Fira Mono 11, DejaVu Sans Mono 11
+
+########################################
+##             COMPOSITOR             ##
+########################################
+#
+
+
+################################################################################
+##                                  KEYBOARD                                  ##
+################################################################################
+########################################
+##             SHORTCUTS              ##
+########################################
+## Mod key: Windows key = Mod4, Alt key = Mod1.
+set $mod Mod4
+
+## Terminal (urxvt).

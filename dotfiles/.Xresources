@@ -1,0 +1,160 @@
+!! LOCATION:     ~/.Xresources
+!! AUTHOR:       AISK11
+!! VERSION:      1.0.0
+!! CREATED:      2022-04-08
+!! UPDATED:      2022-04-08
+!! DESCRIPTION:  Configuration file xinit.
+!! DEPENDENCIES: rxvt-unicode ttf-dejavu ttf-fira-mono
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!              SETTINGS              !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! Double buffering - increase performance.
+URxvt*buffered: true
+
+!! Window with specified X window geometry [80x24].
+URxvt*geometry: 240x84
+
+! skipScroll (True 60 times per second screen update; False - every line update).
+URxvt*skipScroll: True
+
+!! JumpScroll (True: less updates; False: more updates).
+URxvt*jumpScroll: False
+
+!! Scroll type [rxvt, plain, next, xterm].
+URxvt*scrollstyle: plain
+
+!! Disable scrollBar.
+URxvt*scrollBar: False
+
+!! Scroll to bottom when receive output.
+URxvt*scrollTtyOutput: True
+URxvt*scrollWithBuffer: True
+
+!! Window Title.
+URxvt*title: urxvt
+
+!! Visual Bell.
+URxvt*visualBell: False
+
+!! Border in pixels for text since WM border.
+URxvt*internalBorder: 1
+URxvt*externalBorder: 1
+
+!! Line space in pixels between each row.
+URxvt*lineSpace: 0
+
+!! Terminal name (let be commented to Home and End buttons to work).
+!URxvt*termName: xterm-256color
+
+!! Disable iso14755.
+URxvt*iso14755: False
+URxvt*iso14755_52: False
+
+!! Save number of linex to scroll buffer [1000].
+URxvt*saveLines: 650000
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!                FONT                !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! Terminal font (list fonts with $(fc-list) or try with $(urxvt -fn 'xft:DejaVuSansMono')).
+!! Example: Urxvt*font: xft:<FONT>:size=<SIZE>[,xft:<FALLBACK-FONT>:size=<SIZE>]
+URxvt*font:           xft:DejaVuSansMono:size=10,xft:FiraMono-Regular:size=10
+URxvt*boldFont:       xft:DejaVuSansMono-Bold=10,xft:FiraMono-Bold:size=10
+Urxvt*italicFont:     xft:DejaVuSansMono-Oblique=10
+Urxvt*boldItalicFont: xft:DejaVuSansMono-BoldOblique=10
+
+!! Load perl extension to change font size from file (~/.urxvt/ext/fint-size).
+URxvt.perl-ext-common: default,font-size
+!! Change font size (increment: Ctrl+Num+, decrement: Ctrl+Num-, reset: Ctrl+Num0).
+URxvt.keysym.Control-KP_Add:      font-size:increase
+URxvt.keysym.Control-KP_Subtract: font-size:decrease
+URxvt.keysym.Control-KP_0:        font-size:reset
+!! Change font size by size.
+URxvt.font-size.step: 2
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!               CURSOR               !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! Cursor type (True: set cursor underlined; False: square cursor).
+URxvt*cursorUnderline: False
+
+!! Cursor blinking.
+URxvt*cursorBlink: True
+
+!! Cursor color.
+!URxvt*cursorColor: Yellow
+!URxvt*cursorColor2: Black
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!             COPY PASTE             !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! Allow copy-pasting.
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.keysym.Control-Meta-c: builtin-string:
+URxvt.keysym.Control-Meta-v: builtin-string:
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!               COLORS               !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! Background color and foreground color.
+URxvt*background: Black
+URxvt*foreground: White
+
+!! Highlighted (selected text).
+URxvt*highlightColor: White
+URxvt*highlightTextColor: Black
+
+!!! CUSTOM TERMINAL COLORS !!!
+!! Black:
+URxvt.color0:   #000000
+
+!! Dark Red:
+URxvt.color1:   #BD2000
+
+!! Dark Green:
+URxvt.color2:   #2B9348
+
+!! Dark Yellow:
+URxvt.color3:   #FB9846
+
+!! Dark Blue:
+URxvt.color4:   #002FB0
+
+!! Dark Purple:
+URxvt.color5:   #A300FF
+
+!! Dark Cyan:
+URxvt.color6:   #00C1FF
+
+!! Dark White:
+URxvt.color7:   #DEE2E6
+
+!! Light Black / Gray:
+URxvt.color8:   #707070
+
+!! Light Red:
+URxvt.color9:   #EF2929
+
+!! Light Green:
+URxvt.color10:  #4E9A06
+
+!! Light Yellow:
+URxvt.color11:  #F5CD7B
+
+!! Light Blue:
+URxvt.color12:  #548CFF
+
+!! Light Purple:
+URxvt.color13:  #CB95EA
+
+!! Light Cyan:
+URxvt.color14:  #00E0FF
+
+!! Light White:
+URxvt.color15:  #FFFFFF

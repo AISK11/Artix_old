@@ -91,18 +91,36 @@
     \hline
     \textbf{Hardware} & \textbf{Value} \\
     \hline
-    RAID & no\\
-    LVM & no (btrfs)\\
+    RAID & -\\
+    LVM & -\\
     Encryption & LUKS\\
     Root filesystem & btrfs\\
     SWAP & 4GB (file)\\
     Bootloader & rEFInd\\
     Init & dinit\\
+    Shell & zsh\\
     Virtualization & ?\\
     \hline
 \end{tabular}
 \caption{System software overview.}
 \label{table:2}
+\end{table}
+
+\section{Display Software}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}
+    \hline
+    \textbf{Hardware} & \textbf{Value} \\
+    \hline
+    Display server & Xorg\\
+    Window manager & i3-gaps\\
+    Desktop environment & -\\
+    Terminal & rxvt-unicode\\
+    \hline
+\end{tabular}
+\caption{Display software overview.}
+\label{table:3}
 \end{table}
 
 
@@ -114,7 +132,7 @@
         \item \textbf{Artix download page:}
 \newline \url{https://artixlinux.org/download.php}
         \item \textbf{Select install file:}
-\newline \menu[,]{Official ISO images, base, artix-base-dinit-20220123-x86\_64.iso}
+\newline \menu[,]{Official ISO images, base, artix-base-dinit-<YYYYMMDD>-x86\_64.iso}
     \end{itemize}
     \item \textbf{Verify download: @TODO}
 \end{enumerate}
@@ -135,15 +153,15 @@ Make sure, that Secure Boot is disabled!
 \begin{enumerate}
     \item \textbf{During POST press key to access BIOS/UEFI:}
 \newline \href{https://techofide.com/blogs/boot-menu-option-keys-for-all-computers-and-laptops-updated-list-2021-techofide/}{https://techofide.com/blogs/boot-menu-option-keys-for-all-computers-and-laptops-updated-list-2021-techofide/}
-    \item \textbf{Disable Secure Boot}
-    \item \textbf{Poweroff/Restart}
+    \item \textbf{Disable Secure Boot.}
+    \item \textbf{Poweroff/Restart.}
 \end{enumerate}
 \subsection{Boot}
 \begin{enumerate}
-    \item \textbf{Plug in flashed USB}
+    \item \textbf{Plug in flashed USB.}
     \item \textbf{During POST press key to access Boot Menu:}
 \newline \href{https://techofide.com/blogs/boot-menu-option-keys-for-all-computers-and-laptops-updated-list-2021-techofide/}{https://techofide.com/blogs/boot-menu-option-keys-for-all-computers-and-laptops-updated-list-2021-techofide/}
-    \item \textbf{Select USB entry (UEFI)}
+    \item \textbf{Select USB entry (UEFI).}
 \end{enumerate}
 
 
@@ -258,7 +276,7 @@ network=\{
   key_mgmt=WPA-EAP
   #eap=PEAP
   identity="<EMAIL@ADDRESS>"
-  password="9evqh2vm"
+  password="<PASSWORD>"
   #psk=<32byte-HEX-NUMBER>
   #ca_cert="/etc/cert/ca.pem"
   #phase1="peaplabel=0"
@@ -280,22 +298,11 @@ network=\{
 
 \section{Time Sync}
 \begin{enumerate}
-    \item \textbf{Check current system and hardware clock (RTC):}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{date}
-\textcolor{root}{root#} \textcolor{command}{hwclock}
-\end{Verbatim}
-    \item \textbf{Manually set system clock (UTC):}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{date} <MMDDhhmmYYYY>
-\end{Verbatim}
-    \item \textbf{Update RTC with system clock:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{hwclock} --systohc
-\end{Verbatim}
+    \item \textbf{Synchronize time:}
+\newline See section: \underline{\textbf{\ref{datetime}.}}
 \end{enumerate}
 
-\section{Install additional software}
+\section{Install Additional Software}
 \begin{enumerate}
     \item \textbf{Synchronize database:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -595,7 +602,7 @@ btrfs-progs
     \item \textbf{Networking:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] ethtool wpa_supplicant
-wpa_supplicant-dinit [iw] dhcpcd dhcpcd-dinit 
+[iw] dhcpcd
 \end{Verbatim}
 \end{itemize}
 
@@ -661,7 +668,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \textcolor{root}{(chroot) root#} \textcolor{command}{mv} \textcolor{file}{/boot/vmlinuz-linux} <\textcolor{dir}{/boot/EFI/artix/}>
 \end{Verbatim}
 \end{enumerate}
-\subsection{Dracut}
+\subsection{Initramfs}
 \begin{enumerate}
     \item \textbf{Find kernel version:}
     \begin{itemize}
@@ -678,7 +685,7 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 --kver <5.16.16-artix1-1> -H
 \end{Verbatim}
 \end{enumerate}
-\subsection{rEFInd}
+\subsection{Bootloader}
 \begin{enumerate}
     \item \textbf{Copy rEFInd to ESP:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -817,8 +824,7 @@ permit nopass :doas
 \end{Verbatim}
 \end{enumerate}
 
-
-\chapter{Additional Basic Tools}
+\section{Additional Basic Tools}
 \begin{itemize}
     \item \textbf{Manuals:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -837,6 +843,10 @@ permit nopass :doas
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] mtr
 \end{Verbatim}
+    \item \textbf{Files:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] zip unzip
+\end{Verbatim}
 \end{itemize}
 
 
@@ -851,6 +861,7 @@ Valid hostname characters: \textbf{a-z}, \textbf{0-9} and hyphens (\textbf{-}), 
 \end{enumerate}
 
 \section{Date \& Time}
+\label{datetime}
 \subsection{Timezone}
 \begin{enumerate}
     \item \textbf{List timezones:}
@@ -871,7 +882,11 @@ Valid hostname characters: \textbf{a-z}, \textbf{0-9} and hyphens (\textbf{-}), 
         \item \textbf{ISO 8601 (YYYY-MM-DDThh:mm:ss(+|-)xx:xx):}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{user}{user\$} \textcolor{command}{date} '+\%Y-\%m-\%dT\%H:\%M:\%S\%:z'
-\end{Verbatim}   
+\end{Verbatim}
+        \item \textbf{Hardware clock (RTC):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{hwclock}
+\end{Verbatim}
     \end{itemize}
     \item \textbf{Set time:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -1440,18 +1455,85 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
     \item \textbf{Run i3 after Xorg:}
 \newline File (\textbf{\textcolor{file}{\texttildelow/.xinitrc}}):
 \newline \url{https://github.com/AISK11/Artix/blob/main/dotfiles/.xinitrc}
-    \item \textbf{Configuration:}
+    \item \textbf{I3 configuration:}
 \newline File (\textbf{\textcolor{file}{\texttildelow/.config/i3/config}}):
 \newline \url{}    
 \end{enumerate}
-
 \section{I3 Tools}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] feh
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] feh light rxvt-unicode
 \end{Verbatim}
 
 
+\chapter{I3 Tools}
+\section{Fonts}
+\begin{itemize}
+    \item \textbf{See all installed fonts:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{fc-list}
+\end{Verbatim}
+    \item \textbf{Install fonts from repository:}
+    \begin{itemize}
+        \item \textbf{Unicode coverage and emojis:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] noto-fonts
+\end{Verbatim}        
+        \item \textbf{Chinese, Japanese and Korean:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] noto-fonts-cjk
+\end{Verbatim}
+        \item \textbf{Other:}
+        \begin{itemize}
+            \item \textbf{Monospaced:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] ttf-fira-mono ttf-dejavu
+\end{Verbatim}
+        \end{itemize}
+    \end{itemize}
+    \item \textbf{Install custom font:}
+    \begin{enumerate}
+        \item \textbf{Create global and local directory for fonts:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{mkdir} <\textcolor{dir}{\texttildelow/.local/share/fonts/}>
+\textcolor{root}{root#} \textcolor{command}{mkdir} <\textcolor{dir}{/usr/local/share/fonts/}>
+\end{Verbatim}
+        \item \textbf{Download font (TTF or OTF).}
+        \item \textbf{Move font to the directory:}
+        \begin{itemize}
+            \item \textbf{Global:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{mv} <\textcolor{file}{FONT}> <\textcolor{dir}{/usr/local/share/fonts/}>
+\end{Verbatim}
+            \item \textbf{Local:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{mv} <\textcolor{file}{FONT}> <\textcolor{dir}{\texttildelow/.local/share/fonts/}>
+\end{Verbatim}
+        \end{itemize}
+    \end{enumerate}
+    \item \textbf{Install fontawesome (desktop free version):}
+    \begin{enumerate}
+        \item \textbf{Download fontawesome:}
+\newline \url{https://fontawesome.com/download}
+        \item \textbf{Install fontawesome (globally):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{unzip} <\textcolor{file}{\texttildelow/Downloads/fontawesome-free-6.1.1-desktop.zip}>
+\textcolor{root}{root#} \textcolor{command}{cp} -r <\textcolor{dir}{\texttildelow/Downloads/fontawesome-free-6.1.1-desktop/otfs/}>
+\textcolor{dir}{/usr/local/share/fonts/fontawesome/}
+\textcolor{user}{user\$} \textcolor{command}{rm} -rf \textcolor{file}{\texttildelow/Downloads/fontawesome*}
+\end{Verbatim}
+    \end{enumerate}
+\end{itemize}
 
+\section{Terminal Emulator}
+\begin{enumerate}
+    \item \textbf{Install terminal emulator:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] rxvt-unicode
+\end{Verbatim}
+    \item \textbf{Configure terminal emulator:}
+\newline File (\textbf{\textcolor{file}{\texttildelow/.Xresources}}):
+\newline \url{https://github.com/AISK11/Artix/blob/main/dotfiles/.Xresources}
+\end{enumerate}
 
 
 
@@ -1584,5 +1666,7 @@ nftables
 \section{Useful}
 \begin{itemize}
     \item \textbf{Zsh documentation:} \url{https://zsh.sourceforge.io/Doc/}
+    \item \textbf{Linux app list:} \url{https://wiki.archlinux.org/title/List_of_applications}
+    \item \textbf{I3 config options:} \url{https://i3wm.org/docs/userguide.html}
 \end{itemize}
 \end{document}
