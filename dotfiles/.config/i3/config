@@ -1,9 +1,9 @@
 ## LOCATION:     ~/.config/i3/config
 ## AUTHOR:       AISK11
-## VERSION:      0.2.0
+## VERSION:      0.2.2
 ## CREATED:      2022-04-08
 ## UPDATED:      2022-04-08
-## DESCRIPTION:  Configuration file xinit.
+## DESCRIPTION:  Configuration file for i3-gaps tiling window manager.
 ## DEPENDENCIES: i3-gaps ttf-dejavu ttf-fira-mono feh rxvt-unicode numlockx
 
 ################################################################################
@@ -13,7 +13,7 @@
 ##             WALLPAPER              ##
 ########################################
 ## Set static wallpaper.
-set WALLPAPER="~/.config/i3/images/wallpaper.png"
+set $WALLPAPER="~/.config/i3/images/wallpaper.png"
 exec --no-startup-id feh --bg-scale $WALLPAPER
 
 ## Render wallpaper nicely.
@@ -64,13 +64,12 @@ font pango:Fira Mono 11, DejaVu Sans Mono 11
 ## blue   #548cff
 ## green  #4e9a06
 ## grey   #707070
-## dark   #222831
+## dark   #303030
 
 ## Color scheme wor windows.
 set $selected-color   #f5cd7b
 set $unselected-color #707070
 set $urgent-color     #ef2929
-set $bar-bg           #222831
 
 ## Windows colors.
 client.focused              #000000    $selected-color    #000000     $urgent-color
@@ -78,7 +77,12 @@ client.unfocused            #000000    $unselected-color  #000000     #000000
 client.focused_inactive     #000000    $unselected-color  #000000     #000000
 client.urgent               #000000    $urgent-color      #000000     #000000
 
+########################################
+##                BAR                 ##
+########################################
 ## Bar.
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
 #bar {
 #       status_command i3blocks -c ~/.config/i3/i3blocks/i3blocks.conf
 #        position top

@@ -1445,7 +1445,7 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 \end{enumerate}
 
 
-\chapter{I3}
+\chapter{I3 @WIP}
 \section{I3}
 \begin{enumerate}
     \item \textbf{Install:}
@@ -1533,9 +1533,21 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
     \item \textbf{Configure terminal emulator:}
 \newline File (\textbf{\textcolor{file}{\texttildelow/.Xresources}}):
 \newline \url{https://github.com/AISK11/Artix/blob/main/dotfiles/.Xresources}
+    \item \textbf{Apply changes for current X session:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\#} \textcolor{command}{xrdb} \textcolor{file}{\texttildelow/.Xresources}
+\end{Verbatim}
 \end{enumerate}
 
-
+\section{Bar}
+\begin{enumerate}
+    \item \textbf{Install:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] polybar
+\end{Verbatim}
+    \item \textbf{Config:}
+\newline File (\textbf{\textcolor{file}{\texttildelow/.config/polybar/config.ini}}):
+\end{enumerate}
 
 
 
@@ -1668,5 +1680,6 @@ nftables
     \item \textbf{Zsh documentation:} \url{https://zsh.sourceforge.io/Doc/}
     \item \textbf{Linux app list:} \url{https://wiki.archlinux.org/title/List_of_applications}
     \item \textbf{I3 config options:} \url{https://i3wm.org/docs/userguide.html}
+    \item \textbf{Polybar:} \url{https://github.com/polybar/polybar/wiki/Configuration}
 \end{itemize}
 \end{document}

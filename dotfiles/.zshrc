@@ -28,6 +28,7 @@ RED="#ef2929"
 BLUE="#548cff"
 GREEN="#4e9a06"
 GREY="#707070"
+DARK="303030"
 #export PS1="%{$fg[red]%}%n%{$fg[yellow]%}@%{$fg[red]%}%m %{$fg[yellow]%}%~ %{$fg[red]%}%# %{$reset_color%}"
 export PS1="%F{${YELLOW})}%n%f%F{${GREY}}@%f%F{${RED}}%M%f %F{${BLUE}}%~%f %F{${GREY}}%#%f "
 

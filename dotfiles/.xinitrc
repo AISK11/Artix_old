@@ -3,7 +3,7 @@
 ## VERSION:      1.0.0
 ## CREATED:      2022-04-08
 ## UPDATED:      2022-04-08
-## DESCRIPTION:  Configuration file xinit.
+## DESCRIPTION:  Configuration file for xinit.
 ## DEPENDENCIES: xorg-xinit
 
 ## Disable screen saving.
