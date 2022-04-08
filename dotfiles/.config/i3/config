@@ -59,19 +59,18 @@ font pango:Fira Mono 11, DejaVu Sans Mono 11
 ########################################
 ##             I3 COLORS              ##
 ########################################
-## Basic colors.
-set $yellow #f5cd7b
-set $red    #ef2929
-set $blue   #548cff
-set $green  #4e9a06
-set $grey   #707070
-set $dark   #222831
+## yellow #f5cd7b
+## red    #ef2929
+## blue   #548cff
+## green  #4e9a06
+## grey   #707070
+## dark   #222831
 
-## Colos scheme wor windows.
-set $selected-color   $yellow
-set $unselected-color $grey
-set $urgent-color     $red
-set $bar-bg           $dark
+## Color scheme wor windows.
+set $selected-color   #f5cd7b
+set $unselected-color #707070
+set $urgent-color     #ef2929
+set $bar-bg           #222831
 
 ## Windows colors.
 client.focused              #000000    $selected-color    #000000     $urgent-color
@@ -80,19 +79,19 @@ client.focused_inactive     #000000    $unselected-color  #000000     #000000
 client.urgent               #000000    $urgent-color      #000000     #000000
 
 ## Bar.
-bar {
-        #status_command i3blocks -c ~/.config/i3/i3blocks/i3blocks.conf
-        position top
-        separator_symbol "|"
-        strip_workspace_numbers yes
-        colors {
-            background $bar-bg
-            separator $unselected-color
-            focused_workspace   $selected-color   $selected-color   $unselected-color
-            inactive_workspace  $unselected-color $unselected-color $selected-color
-            urgent_workspace    $urgent-color     $urgent-color     #ffffff
-        }
-}
+#bar {
+#       status_command i3blocks -c ~/.config/i3/i3blocks/i3blocks.conf
+#        position top
+#        separator_symbol "|"
+#        strip_workspace_numbers yes
+#        colors {
+#            background $bar-bg
+#            separator $unselected-color
+#            focused_workspace   $selected-color   $selected-color   $unselected-color
+#            inactive_workspace  $unselected-color $unselected-color $selected-color
+#            urgent_workspace    $urgent-color     $urgent-color     #ffffff
+#        }
+#}
 
 ################################################################################
 ##                                  KEYBOARD                                  ##

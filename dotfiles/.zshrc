@@ -1,6 +1,6 @@
 ## LOCATION:     ~/.zshrc
 ## AUTHOR:       AISK11
-## VERSION:      1.1.4
+## VERSION:      1.1.5
 ## CREATED:      2022-04-04
 ## UPDATED:      2022-04-08
 ## DESCRIPTION:  Configuration file for bvi (binary vi) text editor.
@@ -234,7 +234,7 @@ mem()
 ################################################################################
 ##                                    XORG                                    ##
 ################################################################################
-## Run Xorg on tty1 if there is no display. 
+## Run Xorg on tty1 if there is no display.
 if [[ -z ${DISPLAY} ]] && [[ $(tty) = '/dev/tty1' ]]; then
 	source /etc/profile
 	startx
