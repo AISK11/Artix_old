@@ -25,12 +25,15 @@ autoload -U colors && colors
 ################################################################################
 if [[ $(tty) == "/dev/pts"* ]]; then
 	YELLOW="#f5cd7b"
+	RED="#ef2929"
+	BLUE="#548cff"
+	GREEN="#4e9a06"
 else
 	YELLOW="#ffff00"
+	RED="#ff0000"
+	BLUE="#0000ff"
+	GREEN="#00ff00"
 fi
-RED="#ef2929"
-BLUE="#548cff"
-GREEN="#4e9a06"
 GREY="#707070"
 DARK="303030"
 export PS1="%F{${YELLOW})}%n%f%F{${GREY}}@%f%F{${RED}}%M%f %F{${BLUE}}%~%f %F{${GREY}}%#%f "

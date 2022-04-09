@@ -1287,6 +1287,16 @@ MAKEFLAGS="-j\$(nproc)"
     \end{enumerate}
 \end{enumerate}
 
+\section{DEB Packages}
+\begin{enumerate}
+    \item \textbf{Install:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S dpkg
+\end{Verbatim}  
+    \item \textbf{Download .deb package.}
+    \item \textbf{Install package with dpkg:}
+\end{enumerate}
+
 
 \chapter{Vim \& Zsh}
 \section{Vim}
@@ -1401,7 +1411,7 @@ zsh-autosuggestions [zsh-completions]
 \end{itemize}
 
 
-\chapter{Xorg @WIP}
+\chapter{Xorg}
 \section{GPU Drivers}
 \begin{enumerate}
     \item \textbf{Detect GPUs:}
@@ -1435,10 +1445,6 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
     \end{itemize}
 \end{enumerate}
 
-\section{Dual GPU Offloading}
-
-\section{Touchpad Drivers}
-
 \section{Xorg}
 \begin{enumerate}
     \item \textbf{Install:}
@@ -1453,7 +1459,7 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 \begin{enumerate}
     \item \textbf{Install:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] i3-gaps
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] bspwm
 \end{Verbatim}
     \item \textbf{Run i3 after Xorg:}
 \newline File (\textbf{\textcolor{file}{\texttildelow/.xinitrc}}):
@@ -1558,6 +1564,24 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 \section{Lxappearance}
 
 
+\chapter{GUI Programs}
+\section{Steam}
+\begin{enumerate}
+    \item \textbf{Install:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] lib32-fontconfig ttf-liberation 
+wqy-zenhei steam
+\end{Verbatim}    
+    \item \textbf{Enable Proton support:}
+\newline \menu[,]{Steam, Settings, Steam Play, Enable Steam Play for all other titles, Restart Steam}
+    \item \textbf{Disable shader pre-caching:}
+\newline \menu[,]{Steam, Settings, Shader Pre-Caching, Disable Shader Pre-Caching}
+    \item \textbf{Run game with Nvidia instead of intel:}
+\begin{verbatim}
+__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia %command%
+\end{verbatim}
+\end{enumerate}
+
 
 \chapter{Virtualization}
 \section{Theroy}
@@ -1653,7 +1677,6 @@ nftables
 \chapter{ToDo}
 \begin{Verbatim}[commandchars=\\\{\}]
 Nvidia Optimus + backlight control
-Steam + Steam fonts
 bspwm
 polybar
 lockscreen
