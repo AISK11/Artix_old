@@ -23,13 +23,16 @@ autoload -U colors && colors
 ################################################################################
 ##                               COMMAND PROMPT                               ##
 ################################################################################
-YELLOW="#f5cd7b"
+if [[ $(tty) == "/dev/pts"* ]]; then
+	YELLOW="#f5cd7b"
+else
+	YELLOW="#ffff00"
+fi
 RED="#ef2929"
 BLUE="#548cff"
 GREEN="#4e9a06"
 GREY="#707070"
 DARK="303030"
-#export PS1="%{$fg[red]%}%n%{$fg[yellow]%}@%{$fg[red]%}%m %{$fg[yellow]%}%~ %{$fg[red]%}%# %{$reset_color%}"
 export PS1="%F{${YELLOW})}%n%f%F{${GREY}}@%f%F{${RED}}%M%f %F{${BLUE}}%~%f %F{${GREY}}%#%f "
 
 
@@ -223,6 +226,7 @@ alias tree='tree -C'
 
 ## Aliases.
 alias mtr='mtr -t'
+alias nvrun='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia'
 
 ########################################
 ##             FUNCTIONS              ##

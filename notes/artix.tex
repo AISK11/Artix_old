@@ -732,8 +732,10 @@ blacklist pcspkr
 \textcolor{comment}{[cmd <COMMAND> [args <ARGUMENTS>]}
 permit nopass :doas
 \end{Verbatim}
+\end{enumerate}
 
 \section{Create non-root user}
+\begin{enumerate}
     \item \textbf{Create user with home directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{useradd} -m <USER>
@@ -1433,9 +1435,9 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
     \end{itemize}
 \end{enumerate}
 
-\section{Touchpad Drivers}
-
 \section{Dual GPU Offloading}
+
+\section{Touchpad Drivers}
 
 \section{Xorg}
 \begin{enumerate}
@@ -1646,6 +1648,35 @@ nftables
 /etc/AUR/xen/pkg/xen/boot/xen.efi
 /etc/AUR/xen/xen.conf
 \end{Verbatim}        
+
+
+\chapter{ToDo}
+\begin{Verbatim}[commandchars=\\\{\}]
+Nvidia Optimus + backlight control
+Steam + Steam fonts
+bspwm
+polybar
+lockscreen
+rofi
+compton
+power saving
+
+virtualization (KVM or Xen)
+
+GUI programs for: wifi
+
+Programming: Atom, git, Unity
+
+GUI: lxappearance, keepassxc, Firefox, Fosscord/Webcord
+
+security + anonymity
+
+VIRTUALIZATION:
+See archcraft apps and rice
+See debian getty program
+See QubesOS Xen solution
+test optimization Arch, Debian, Artix
+\end{Verbatim}     
 
 
 
