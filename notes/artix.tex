@@ -205,101 +205,15 @@ Make sure, that Secure Boot is disabled!
 \end{itemize}
 
 \section{Connect To The Internet}
-\subsection{Ethernet}
 \begin{enumerate}
-    \item \textbf{Put interface to UP state:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{ip} l set <eth0> up
-\end{Verbatim}
-    \item \textbf{Lease IP address:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dhcpcd} <eth0>
-\end{Verbatim}
-\end{enumerate}
-\subsection{Wi-Fi @WIP}
-\begin{enumerate}
-    \item \textbf{Unblock Wi-Fi:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{rfkill} unblock wlan
-\end{Verbatim}
-    \item \textbf{Put interface to UP state:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{ip} l set <wlan0> up
-\end{Verbatim}
-    \item \textbf{Start wpa\_supplicant service:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dinitctl} start wpa\_supplicant
-\end{Verbatim}
-    \item \textbf{See available interfaces and select one:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{wpa_cli} interface
-\textcolor{root}{root#} \textcolor{command}{wpa_cli} interface <wlan0>
-\end{Verbatim}
-    \item \textbf{See current wlan status and scan for networks:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{wpa_cli} status
-\textcolor{root}{root#} \textcolor{command}{wpa_cli} scan
-\textcolor{root}{root#} \textcolor{command}{wpa_cli} scan_results
-\end{Verbatim}
-    \item \textbf{Configure wpa\_supplicant:}
-\newline File (\textbf{\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}}):
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{comment}{## Basic settings.}
-ctrl_interface=/run/wpa_supplicant
-update_config=1
-
-\textcolor{comment}{## Country for wireless channels (2 letter ISO country code, e.g. DK = Denmark).}
-country=DK
-
-\textcolor{comment}{## UNPROTECTED:}
-network=\{
-  ssid="<ESSID>"
-  scan_ssid=1                 \textcolor{comment}{## Find hidden network}
-  key_mgmt=NONE
-  priority=3                  \textcolor{comment}{## Connection priority}
-\}
-
-\textcolor{comment}{## WPA-PSK:}
-network=\{
-  ssid="<ESSID>"
-  scan_ssid=1                 \textcolor{comment}{## Find hidden network}
-  key_mgmt=WPA-PSK
-  psk="<PASSWORD>"
-  #psk=<32byte-HEX-NUMBER>
-  priority=1                  \textcolor{comment}{## Connection priority}
-\}
-
-\textcolor{comment}{## WPA-EAP:}
-network=\{
-  ssid="<ESSID>"
-  scan_ssid=1                 \textcolor{comment}{## Find hidden network}
-  key_mgmt=WPA-EAP
-  #eap=PEAP
-  identity="<EMAIL@ADDRESS>"
-  password="<PASSWORD>"
-  #psk=<32byte-HEX-NUMBER>
-  #ca_cert="/etc/cert/ca.pem"
-  #phase1="peaplabel=0"
-  phase2="auth=MSCHAPV2"
-  priority=2                  \textcolor{comment}{## Connection priority}
-\}
-\end{Verbatim}
-    \item \textbf{Connect to configured ESSID:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{killall} -9 wpa\_supplicant
-\textcolor{root}{root#} \textcolor{command}{wpa\_supplicant} -B -D wext -i <wlan0>
--c <\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}>
-\end{Verbatim}
-    \item \textbf{Lease IP address:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dhcpcd} <wlan0>
-\end{Verbatim}
+    \item \textbf{Connect to the internet:}
+\newline See section: \underline{\textbf{\ref{network}}}.
 \end{enumerate}
 
 \section{Time Sync}
 \begin{enumerate}
     \item \textbf{Synchronize time:}
-\newline See section: \underline{\textbf{\ref{datetime}.}}
+\newline See section: \underline{\textbf{\ref{datetime}}}.
 \end{enumerate}
 
 \section{Install Additional Software}
@@ -1029,7 +943,8 @@ FONT=eurlatgr
 \end{itemize}
 
 
-\chapter{Network @WIP}
+\chapter{Network}
+\label{network}
 \section{Rfkill}
 \begin{enumerate}
     \item \textbf{List rfkill rules:}
@@ -1043,22 +958,74 @@ FONT=eurlatgr
 \end{enumerate}
 
 \section{Ethernet}
-\subsection{Set up interface:}
+\subsection{Monitoring}
+\begin{itemize}
+    \item \textbf{Show link info:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{ethtool} <eth0>
+\end{Verbatim}
+\end{itemize}
+\subsection{Connect}
 \begin{enumerate}
     \item \textbf{Put interface logically UP:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{ip} l set <eth0> up
 \end{Verbatim}
 \end{enumerate}
-\subsection{Monitoring}
+
+\section{Wi-Fi}
+\subsection{Configuration}
 \begin{enumerate}
-    \item \textbf{Show link info:}
+    \item \textbf{Configure wpa\_supplicant:}
+\newline File (\textbf{\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}}):
+\newline \url{https://github.com/AISK11/Artix/blob/main/configs/wpa_supplicant/wpa_supplicant.conf}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{ethtool} <eth0>
+\textcolor{comment}{## Basic settings (needed to be able to launch wpa_cli).}
+ctrl_interface=/run/wpa_supplicant
+update_config=1
+
+\textcolor{comment}{## Country for wireless channels (2 letter ISO country code, e.g. DK = Denmark).}
+country=DK
+
+\textcolor{comment}{## UNPROTECTED:}
+network=\{
+  ssid="<ESSID>"
+  scan_ssid=1                 \textcolor{comment}{## Find hidden network}
+  key_mgmt=NONE
+  priority=3                  \textcolor{comment}{## Connection priority}
+\}
+
+\textcolor{comment}{## WPA-PSK:}
+network=\{
+  ssid="<ESSID>"
+  scan_ssid=1                 \textcolor{comment}{## Find hidden network}
+  key_mgmt=WPA-PSK
+  psk="<PASSWORD>"
+  #psk=<32byte-HEX-NUMBER>
+  priority=1                  \textcolor{comment}{## Connection priority}
+\}
+
+\textcolor{comment}{## WPA-EAP:}
+network=\{
+  ssid="<ESSID>"
+  scan_ssid=1                 \textcolor{comment}{## Find hidden network}
+  key_mgmt=WPA-EAP
+  #eap=PEAP
+  identity="<EMAIL@ADDRESS>"
+  password="<PASSWORD>"
+  #psk=<32byte-HEX-NUMBER>
+  #ca_cert="/etc/cert/ca.pem"
+  #phase1="peaplabel=0"
+  phase2="auth=MSCHAPV2"
+  priority=2                  \textcolor{comment}{## Connection priority}
+\}
+\end{Verbatim}    
+    \item \textbf{Change config file permissions:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{chmod} 0600 <\textcolor{file}{/etc/wpa_supplicant/wpa_supplicant.conf}>
 \end{Verbatim}
 \end{enumerate}
-\section{Wi-Fi}
-\subsection{Set up interface:}
+\subsection{Connect}
 \begin{enumerate}
     \item \textbf{Unblock Wi-Fi in rfkill:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -1068,54 +1035,44 @@ FONT=eurlatgr
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{ip} l set <wlan0> up
 \end{Verbatim}
-    \item \textbf{Start wpa\_supplicant service:}
+    \item \textbf{Find ESSID:}
+    \begin{enumerate}
+        \item \textbf{Run wpa\_supplicant process:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dinitctl} start wpa_supplicant
-\end{Verbatim}
-\end{enumerate}
-\subsection{Monitoring}
-\begin{enumerate}
-    \item \textbf{Show all available interfaces and pick one:}
+\textcolor{root}{root#} \textcolor{command}{wpa\_supplicant} -B -D wext -i <wlan0>
+-c <\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}>
+\end{Verbatim}        
+        \item \textbf{See available interfaces and select one:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{wpa_cli} interface
 \textcolor{root}{root#} \textcolor{command}{wpa_cli} interface <wlan0>
 \end{Verbatim}
-    \item \textbf{Show current wireless link status:}
+        \item \textbf{Show current wireless link status:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{wpa_cli} status
-\textcolor{root}{root#} \textcolor{command}{iw} <wlan0> link
+\textcolor{user}{user\$} \textcolor{command}{iw} <wlan0> link
 \end{Verbatim}
-    \item \textbf{Scan networks:}
+         \item \textbf{See current wlan status and scan for networks:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{wpa_cli} scan
 \textcolor{root}{root#} \textcolor{command}{wpa_cli} scan_results
 \end{Verbatim}
-\end{enumerate}
-\subsection{Configuration}
-\begin{enumerate}
-    \item \textbf{Disable wpa\_supplicant on boot:}
+        \item \textbf{Add ESSID to <\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}>.}
+    \item \textbf{Remove current wpa\_supplicant config to avoid problems:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dinitctl} disable wpa\_supplicant
+\textcolor{user}{user\$} \textcolor{command}{ps} -ef | \textcolor{command}{grep} '<wlan0>' | \textcolor{command}{grep} 'wpa_supplicant'
+\textcolor{root}{root#} \textcolor{command}{kill} -9 <PID>
+\textcolor{root}{root#} \textcolor{command}{rm} -f <\textcolor{file}{/run/wpa_supplicant/<wlan0>}>
 \end{Verbatim}
-    \item \textbf{Configure wpa\_supplicant}
-\newline File (\textbf{\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}}):
-\newline \url{https://github.com/AISK11/Artix/blob/main/configs/wpa_supplicant/wpa_supplicant.conf}
-    \item \textbf{Change config file permissions:}
+    \end{enumerate}
+    \item \textbf{Connect to configured ESSID:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{chmod} 0600 <\textcolor{file}{/etc/wpa_supplicant/wpa_supplicant.conf}>
+\textcolor{root}{root#} \textcolor{command}{wpa\_supplicant} -B -D wext -i <wlan0>
+-c <\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}>
 \end{Verbatim}
-\end{enumerate}
-\subsection{Connect}
-\begin{enumerate}
-    \item \textbf{Remove previous instances of wpa\_supplicant to avoid issues:}
+    \item \textbf{Lease IP address:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{killall} -9 wpa_supplicant
-\textcolor{root}{root#} \textcolor{command}{rm} -f <\textcolor{dir}{/run/wpa_supplicant/*}>
-\end{Verbatim}
-    \item \textbf{Connect to AP:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{wpa_supplicant} -B -D wext -i <wlan0> 
--c <\textcolor{file}{/etc/wpa_supplicant/wpa_supplicant.conf}>
+\textcolor{root}{root#} \textcolor{command}{dhcpcd} <wlan0>
 \end{Verbatim}
 \end{enumerate}
 
@@ -1125,14 +1082,10 @@ FONT=eurlatgr
     \item \textbf{Configuration file:}
 \newline File (\textbf{\textcolor{file}{/etc/dhcpcd.conf}}):
 \newline \url{https://github.com/AISK11/Artix/blob/main/configs/dhcpcd/dhcpcd.conf}
-    \item \textbf{Disable on startup:}
-\begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} \textcolor{command}{dinitctl} disable dhcpcd
-\end{Verbatim}
 \end{enumerate}
 
 \section{DNS}
-Recommended DNS resolvers: \url{https://www.privacytools.io/#dns}
+DNS resolvers list: \url{https://www.privacytools.io/#dns}
 \begin{enumerate}
     \item \textbf{Configure DNS server list:}
 \newline File (\textbf{\textcolor{file}{/etc/resolv.conf}}):
@@ -1304,7 +1257,7 @@ MAKEFLAGS="-j\$(nproc)"
 \end{enumerate}
 
 
-\chapter{Zsh \& Vim}
+\chapter{Vim \& Zsh}
 \section{Vim}
 \begin{enumerate}
     \item \textbf{Create symlink for visudo (ignores EDITOR and VISUAL):}
@@ -1328,7 +1281,7 @@ EDITOR="/bin/vim"
     \item \textbf{Install:}
     \begin{itemize}
         \item \url{https://aur.archlinux.org/packages/bvi/}
-        \item \textbf{See: \underline{\ref{AUR}}.}
+        \item \textbf{See section: \underline{\ref{AUR}}.}
     \end{itemize}
     \item \textbf{Configuration:}
 \newline File (\textbf{\textcolor{file}{\texttildelow/.bvirc}}):
@@ -1361,14 +1314,12 @@ zsh-autosuggestions [zsh-completions]
 \end{enumerate}
 
 
-
-
-\chapter{Audio @WIP}
+\chapter{Audio}
 \section{Install}
 \begin{enumerate}
     \item \textbf{Install:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] alsa-utils
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] alsa-utils pulseaudio
 \end{Verbatim}
 \end{enumerate}
 
@@ -1376,6 +1327,22 @@ zsh-autosuggestions [zsh-completions]
 \begin{itemize}
     \item \textbf{Get audio:}
 \begin{Verbatim}[commandchars=\\\{\}]
+exec amixer set PCM 50%
+exec amixer set Master 100%
+exec amixer set Master mute
+exec amixer set Headphone 100%
+exec amixer set Headphone unmute
+exec amixer set Speaker 100%
+exec amixer set Speaker unmute
+exec amixer set Capture 30%
+exec amixer set Capture nocap
+
+## Audio control shortcuts.
+bindsym XF86AudioMute exec amixer set Master toggle && amixer set Headphone unmute && amixer set Speaker unmute
+bindsym XF86AudioLowerVolume exec amixer set PCM 5%-
+bindsym XF86AudioRaiseVolume exec amixer set PCM 5%+
+bindsym XF86AudioMicMute exec amixer set Capture toggle
+
 \textcolor{user}{user\$} \textcolor{command}{amixer} get <Master|Headphone|Speaker>
 \end{Verbatim}
     \item \textbf{Mute and unmute:}
@@ -1395,7 +1362,28 @@ zsh-autosuggestions [zsh-completions]
     \end{itemize}
 \end{itemize}
 
-\section{Microphone @WIP}
+\section{Microphone}
+\begin{itemize}
+    \item \textbf{Get mic:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{amixer} get Capture
+\end{Verbatim}
+    \item \textbf{Mute and unmute:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{amixer} set Capture <cap|nocap|toggle>
+\end{Verbatim}
+    \item \textbf{Set volume:}
+    \begin{itemize}
+        \item \textbf{Specific volume:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{amixer} set Capture <0-100>\%
+\end{Verbatim}        
+        \item \textbf{Increase/decrease volume:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{amixer} set Capture <0-100>\%<+|->
+\end{Verbatim}   
+    \end{itemize}
+\end{itemize}
 
 
 \chapter{Xorg @WIP}
@@ -1547,8 +1535,12 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 \end{Verbatim}
     \item \textbf{Config:}
 \newline File (\textbf{\textcolor{file}{\texttildelow/.config/polybar/config.ini}}):
+\newline \url{https://github.com/AISK11/Artix/blob/main/dotfiles/.config/polybar/config.ini}
 \end{enumerate}
 
+\section{Compositor}
+
+\section{Lxappearance}
 
 
 
@@ -1681,5 +1673,6 @@ nftables
     \item \textbf{Linux app list:} \url{https://wiki.archlinux.org/title/List_of_applications}
     \item \textbf{I3 config options:} \url{https://i3wm.org/docs/userguide.html}
     \item \textbf{Polybar:} \url{https://github.com/polybar/polybar/wiki/Configuration}
+    \item \textbf{Polybar themes:} \url{https://github.com/kiddae/polybar-themes}    
 \end{itemize}
 \end{document}

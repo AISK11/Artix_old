@@ -1,8 +1,8 @@
 ## LOCATION:     ~/.config/i3/config
 ## AUTHOR:       AISK11
-## VERSION:      0.2.2
+## VERSION:      0.2.4
 ## CREATED:      2022-04-08
-## UPDATED:      2022-04-08
+## UPDATED:      2022-04-09
 ## DESCRIPTION:  Configuration file for i3-gaps tiling window manager.
 ## DEPENDENCIES: i3-gaps ttf-dejavu ttf-fira-mono feh rxvt-unicode numlockx
 
@@ -17,7 +17,7 @@ set $WALLPAPER="~/.config/i3/images/wallpaper.png"
 exec --no-startup-id feh --bg-scale $WALLPAPER
 
 ## Render wallpaper nicely.
-exec --no-startup-id bash ${HOME}/.fehbg
+#exec --no-startup-id bash ${HOME}/.fehbg
 
 ########################################
 ##            LOCK SCREEN             ##
@@ -80,9 +80,10 @@ client.urgent               #000000    $urgent-color      #000000     #000000
 ########################################
 ##                BAR                 ##
 ########################################
-## Bar.
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+## polybar
+exec_always polybar
 
+## i3blocks
 #bar {
 #       status_command i3blocks -c ~/.config/i3/i3blocks/i3blocks.conf
 #        position top
@@ -119,10 +120,10 @@ set $mod Mod4
 ##       I3       ##
 ####################
 ## Reload config file (refreshes screen if buggy).
-bindsym $mod+Shift+r reload
+#bindsym $mod+Shift+r reload
 
 ## Restart i3 inplace (preserves your layout/session, can be used to upgrade i3).
-#bindsym $mod+Shift+c restart
+bindsym $mod+Shift+r restart
 
 ## Exit i3.
 #bindsym $mod+Shift+e exec killall -9 xinit
@@ -131,10 +132,10 @@ bindsym $mod+Shift+r reload
 ##    TERMINAL    ##
 ####################
 ## Load terminal emulator settings.
-exec xrdb ~/.Xresources
+exec --no-startup-id xrdb ~/.Xresources
 
 ## Run terminal as daemon.
-exec --no-startup-id urxvtd --quiet --opendisplay --fork
+exec --no-startup-id --quiet --opendisplay --fork
 
 ## Terminal (urxvt), Mod+ENTER.
 bindsym $mod+Return exec urxvt
@@ -272,7 +273,22 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 ####################
 ##     AUDIO      ##
 ####################
-#
+## Set default audio values.
+exec --no-startup-id amixer set PCM 50%
+exec --no-startup-id amixer set Master 50%
+exec --no-startup-id amixer set Master mute
+exec --no-startup-id amixer set Headphone 100%
+exec --no-startup-id amixer set Headphone unmute
+exec --no-startup-id amixer set Speaker 100%
+exec --no-startup-id amixer set Speaker unmute
+exec --no-startup-id amixer set Capture 30%
+exec --no-startup-id amixer set Capture nocap
+
+## Audio control shortcuts.
+bindsym XF86AudioMute exec amixer set Master toggle && amixer set Headphone unmute && amixer set Speaker unmute
+bindsym XF86AudioLowerVolume exec amixer set PCM 5%- && amixer set Master 100%
+bindsym XF86AudioRaiseVolume exec amixer set PCM 5%+ && amixer set Master 100%
+bindsym XF86AudioMicMute exec amixer set Capture toggle
 
 ####################
 ##  PRINT SCREEN  ##
@@ -313,7 +329,7 @@ assign [class="Steam"] $ws9
 ##            RUN ON START            ##
 ########################################
 ## Start with numlock on.
-exec numlockx on
+exec --no-startup-id numlockx on
 
 ## Allow GUI programs to be run by root.
-exec xhost local:root
+exec --no-startup-id xhost local:root

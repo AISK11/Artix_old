@@ -1,10 +1,10 @@
 ## LOCATION:     ~/.zshrc
 ## AUTHOR:       AISK11
-## VERSION:      1.1.5
+## VERSION:      1.1.6
 ## CREATED:      2022-04-04
-## UPDATED:      2022-04-08
-## DESCRIPTION:  Configuration file for bvi (binary vi) text editor.
-## DEPENDENCIES: zsh [zsh-syntax-highlighting] [zsh-autosuggestions] [zsh-completions]
+## UPDATED:      2022-04-09
+## DESCRIPTION:  Configuration file for shell zsh.
+## DEPENDENCIES: zsh zsh-syntax-highlighting zsh-autosuggestions [zsh-completions]
 
 ################################################################################
 ##                                   CLEAR                                    ##
