@@ -65,8 +65,8 @@
 
 
 \chapter{System Info}
-\section{System Hardware}
-\begin{table}[h!]
+%\section{System Hardware}
+\begin{table}[!ht]
 \centering
 \begin{tabular}{|c|c|}
     \hline
@@ -84,12 +84,12 @@
 \label{table:1}
 \end{table}
 
-\section{System Software}
-\begin{table}[h!]
+%\section{System Software}
+\begin{table}[!ht]
 \centering
 \begin{tabular}{|c|c|}
     \hline
-    \textbf{Hardware} & \textbf{Value} \\
+    \textbf{Software} & \textbf{Value} \\
     \hline
     RAID & -\\
     LVM & -\\
@@ -97,6 +97,8 @@
     Root filesystem & btrfs\\
     SWAP & 4GB (file)\\
     Bootloader & rEFInd\\
+    Kernel & linux (artix)\\
+    Initramfs & dracut\\
     Init & dinit\\
     Shell & zsh\\
     Virtualization & ?\\
@@ -106,17 +108,17 @@
 \label{table:2}
 \end{table}
 
-\section{Display Software}
-\begin{table}[h!]
+%\section{Display Software}
+\begin{table}[!ht]
 \centering
 \begin{tabular}{|c|c|}
     \hline
-    \textbf{Hardware} & \textbf{Value} \\
+    \textbf{Software} & \textbf{Value} \\
     \hline
     Display server & Xorg\\
-    Window manager & i3-gaps\\
+    Window manager & bspwm\\
     Desktop environment & -\\
-    Terminal & rxvt-unicode\\
+    Terminal emulator & rxvt-unicode\\
     \hline
 \end{tabular}
 \caption{Display software overview.}
@@ -148,8 +150,7 @@
 \end{enumerate}
 
 \section{Boot USB}
-\subsection{Secure Boot}
-Make sure, that Secure Boot is disabled!
+\subsection{Disable Secure Boot}
 \begin{enumerate}
     \item \textbf{During POST press key to access BIOS/UEFI:}
 \newline \href{https://techofide.com/blogs/boot-menu-option-keys-for-all-computers-and-laptops-updated-list-2021-techofide/}{https://techofide.com/blogs/boot-menu-option-keys-for-all-computers-and-laptops-updated-list-2021-techofide/}
@@ -182,7 +183,7 @@ Make sure, that Secure Boot is disabled!
 \end{Verbatim}
 \end{itemize}
 
-\section{Disable pcspkr}
+\section{Disable pcspkr Module}
 \begin{enumerate}
     \item \textbf{See if pcspkr is active:}  
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -294,7 +295,7 @@ Make sure, that Secure Boot is disabled!
 \end{figure}
 \subsection{Partition Table}
 \begin{enumerate}
-    \item \textbf{Unmount FS!}
+    \item \textbf{Unmount FS from disk on which linux will be installed!}
     \item \textbf{Create GPT partition table:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{parted} -s <\textcolor{block}{/dev/sdX}> mktable gpt
@@ -757,7 +758,7 @@ permit nopass :doas
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] mtr
 \end{Verbatim}
-    \item \textbf{Files:}
+    \item \textbf{File management:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] zip unzip
 \end{Verbatim}
@@ -851,7 +852,7 @@ en_US ISO-885-1
 \end{enumerate}
 
 \section{CLI Keyboard}
-Dracut initramfs will include keymap and font on re-generation!
+Dracut initramfs will include keymap and font on initramfs on next re-generation!
 \begin{itemize}
     \item \textbf{Keymap:}
     \begin{enumerate}
@@ -971,6 +972,18 @@ FONT=eurlatgr
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{ip} l set <eth0> up
 \end{Verbatim}
+    \item \textbf{Connect to network:}
+    \begin{itemize}
+        \item \textbf{Static IP:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{ip} a add <10.0.0.11>/<24> dev <eth0>
+\textcolor{root}{root#} \textcolor{command}{ip} r add default via <10.0.0.1>
+\end{Verbatim}
+        \item \textbf{DHCP:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dhcpcd} <eth0>
+\end{Verbatim}
+    \end{itemize}
 \end{enumerate}
 
 \section{Wi-Fi}
@@ -1058,7 +1071,7 @@ network=\{
 \textcolor{root}{root#} \textcolor{command}{wpa_cli} scan_results
 \end{Verbatim}
         \item \textbf{Add ESSID to <\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}>.}
-    \item \textbf{Remove current wpa\_supplicant config to avoid problems:}
+    \item \textbf{Remove current wpa\_supplicant process to avoid problems:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{user}{user\$} \textcolor{command}{ps} -ef | \textcolor{command}{grep} '<wlan0>' | \textcolor{command}{grep} 'wpa_supplicant'
 \textcolor{root}{root#} \textcolor{command}{kill} -9 <PID>
@@ -1070,10 +1083,18 @@ network=\{
 \textcolor{root}{root#} \textcolor{command}{wpa\_supplicant} -B -D wext -i <wlan0>
 -c <\textcolor{file}{/etc/wpa\_supplicant/wpa\_supplicant.conf}>
 \end{Verbatim}
-    \item \textbf{Lease IP address:}
+    \item \textbf{Connect to network:}
+    \begin{itemize}
+        \item \textbf{Static IP:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{ip} a add <10.0.0.11>/<24> dev <wlan0>
+\textcolor{root}{root#} \textcolor{command}{ip} r add default via <10.0.0.1>
+\end{Verbatim}
+        \item \textbf{DHCP:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{dhcpcd} <wlan0>
 \end{Verbatim}
+    \end{itemize}
 \end{enumerate}
 
 \section{DHCP}
@@ -1327,37 +1348,21 @@ zsh-autosuggestions [zsh-completions]
 \begin{itemize}
     \item \textbf{Get audio:}
 \begin{Verbatim}[commandchars=\\\{\}]
-exec amixer set PCM 50%
-exec amixer set Master 100%
-exec amixer set Master mute
-exec amixer set Headphone 100%
-exec amixer set Headphone unmute
-exec amixer set Speaker 100%
-exec amixer set Speaker unmute
-exec amixer set Capture 30%
-exec amixer set Capture nocap
-
-## Audio control shortcuts.
-bindsym XF86AudioMute exec amixer set Master toggle && amixer set Headphone unmute && amixer set Speaker unmute
-bindsym XF86AudioLowerVolume exec amixer set PCM 5%-
-bindsym XF86AudioRaiseVolume exec amixer set PCM 5%+
-bindsym XF86AudioMicMute exec amixer set Capture toggle
-
-\textcolor{user}{user\$} \textcolor{command}{amixer} get <Master|Headphone|Speaker>
+\textcolor{user}{user\$} \textcolor{command}{amixer} get <Master|PCM|Headphone|Speaker>
 \end{Verbatim}
     \item \textbf{Mute and unmute:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{user}{user\$} \textcolor{command}{amixer} set <Master|Headphone|Speaker> <mute|unmute|toggle>
+\textcolor{user}{user\$} \textcolor{command}{amixer} set <Master|PCM|Headphone|Speaker> <mute|unmute|toggle>
 \end{Verbatim}
     \item \textbf{Set volume:}
     \begin{itemize}
         \item \textbf{Specific volume:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{user}{user\$} \textcolor{command}{amixer} set <Master|Headphone|Speaker> <0-100>\%
+\textcolor{user}{user\$} \textcolor{command}{amixer} set <Master|PCM|Headphone|Speaker> <0-100>\%
 \end{Verbatim}        
         \item \textbf{Increase/decrease volume:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{user}{user\$} \textcolor{command}{amixer} set <Master|Headphone|Speaker> <0-100>\%<+|->
+\textcolor{user}{user\$} \textcolor{command}{amixer} set <Master|PCM|Headphone|Speaker> <0-100>\%<+|->
 \end{Verbatim}   
     \end{itemize}
 \end{itemize}
