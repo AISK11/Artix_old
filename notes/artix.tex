@@ -585,6 +585,14 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \end{enumerate}
 \subsection{Initramfs}
 \begin{enumerate}
+    \item \textbf{Add numlock module to dracut modules directory:}
+\newline \url{https://github.com/AISK11/Artix/tree/main/configs/dracut/50numlock}
+\newline (Original author: \url{https://github.com/FivEawE/dracut-numlock})
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{(chroot) root#} \textcolor{command}{git} clone https://www.github.com/aisk11/artix
+\textcolor{root}{(chroot) root#} \textcolor{command}{cp} -r <\textcolor{dir}{./artix/configs/dracut/50numlock/}>
+\textcolor{dir}{/usr/lib/dracut/modules.d/}
+\end{Verbatim}
     \item \textbf{Find kernel version:}
     \begin{itemize}
         \item \textbf{Kernel version in boot:}
@@ -1438,7 +1446,7 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 \end{enumerate}
 
 
-\chapter{I3 @WIP}
+\chapter{Window Manager @WIP}
 \section{I3}
 \begin{enumerate}
     \item \textbf{Install:}
@@ -1458,7 +1466,7 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 \end{Verbatim}
 
 
-\chapter{I3 Tools}
+\chapter{WM Tools @WIP}
 \section{Fonts}
 \begin{itemize}
     \item \textbf{See all installed fonts:}
@@ -1547,6 +1555,46 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 
 \section{Lxappearance}
 
+
+
+\chapter{Virtualization}
+\section{Theroy}
+\begin{figure}[ht]
+    \begin{center}
+        \includegraphics[width=120mm]{./src/img/virtualizations2.png}
+        \caption{Comparison between Xen, KVM and QEMU hypervisors.}
+        \label{fig:3}
+    \end{center}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Hardware VM (HVM):} full virtualization, VMs are not aware, that they are sharing processing time with other clients on the same hardware.
+    \item \textbf{Paravirtual (PV):} lighter virtualization, near native speed compared to HVM.
+\end{itemize}
+
+\section{Virtualization Support}
+\begin{enumerate}
+    \item \textbf{See if virtualization is supported:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{grep} -E 'vmx|svm|0xc0f' \textcolor{file}{/proc/cpuinfo}
+\end{Verbatim}
+    \item \textbf{If virtualization is not supported, check if it is not disabled in BIOS/UEFI.}
+\end{enumerate}
+
+\section{KVM (T1 Hypervisor)}
+\begin{enumerate}
+    \item \textbf{Install:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] 
+\end{Verbatim}
+\end{enumerate}
+
+\section{Xen (T1 Hypervisor)}
+\begin{enumerate}
+    \item \textbf{Install:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] 
+\end{Verbatim}
+\end{enumerate}
 
 
 \chapter{Programming \& Development @TODO}
@@ -1679,5 +1727,18 @@ nftables
     \item \textbf{I3 config options:} \url{https://i3wm.org/docs/userguide.html}
     \item \textbf{Polybar:} \url{https://github.com/polybar/polybar/wiki/Configuration}
     \item \textbf{Polybar themes:} \url{https://github.com/kiddae/polybar-themes}    
+\end{itemize}
+
+\section{Virtualization}
+\begin{itemize}
+    \item \textbf{KVM:}
+    \begin{itemize}
+        \item \textbf{Installation:} \url{https://wiki.archlinux.org/title/KVM}
+        \item \textbf{Nested KVM guests:} \url{https://www.kernel.org/doc/html/v5.16-rc1/virt/kvm/running-nested-guests.html}
+    \end{itemize}
+    \item \textbf{Xen:}
+    \begin{itemize}
+        \item \textbf{Installation:} \url{https://wiki.archlinux.org/title/Xen}
+    \end{itemize}
 \end{itemize}
 \end{document}
