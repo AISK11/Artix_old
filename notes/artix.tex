@@ -977,7 +977,7 @@ FONT=eurlatgr
         \item \textbf{Static IP:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{ip} a add <10.0.0.11>/<24> dev <eth0>
-\textcolor{root}{root#} \textcolor{command}{ip} r add default via <10.0.0.1>
+\textcolor{root}{root#} \textcolor{command}{ip} r add default via <10.0.0.1> [dev <eth0>]
 \end{Verbatim}
         \item \textbf{DHCP:}
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -1088,7 +1088,7 @@ network=\{
         \item \textbf{Static IP:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{ip} a add <10.0.0.11>/<24> dev <wlan0>
-\textcolor{root}{root#} \textcolor{command}{ip} r add default via <10.0.0.1>
+\textcolor{root}{root#} \textcolor{command}{ip} r add default via <10.0.0.1> [dev <wlan0>]
 \end{Verbatim}
         \item \textbf{DHCP:}
 \begin{Verbatim}[commandchars=\\\{\}]

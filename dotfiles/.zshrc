@@ -1,6 +1,6 @@
 ## LOCATION:     ~/.zshrc
 ## AUTHOR:       AISK11
-## VERSION:      1.1.6
+## VERSION:      1.1.7
 ## CREATED:      2022-04-04
 ## UPDATED:      2022-04-09
 ## DESCRIPTION:  Configuration file for shell zsh.
@@ -201,6 +201,9 @@ export PATH="${PATH}:/sbin:/usr/sbin"
 
 ## Interpret colors in 'less'.
 export LESS='-R --use-color -Dd+r$Du+b'
+
+## Do not create '~/.lesshst' file.
+export LESSHISTFILE=-
 
 ########################################
 ##              ALIASES               ##
