@@ -563,6 +563,12 @@ luks-root             UUID=<UUID_/dev/sdX2> none        luks
 \end{Verbatim}
 \end{enumerate}
 
+\section{Local Settings}
+\begin{enumerate}
+    \item \textbf{Configure local settings:}
+\newline See section: \underline{\textbf{\ref{local_settings}}}.
+\end{enumerate}
+
 \section{Boot}
 \subsection{ESP File Structure}
 \begin{enumerate}
@@ -727,10 +733,15 @@ blacklist pcspkr
 \end{Verbatim}
     \item \textbf{Add rights to the group:}
 \newline File (\textbf{\textcolor{file}{/etc/doas.conf}}):
+\newline \url{https://github.com/AISK11/Artix/blob/main/configs/doas/doas.conf}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{comment}{## <permit|deny> [nopass|persist] <USER>[:GROUP] [as <USER2>]}
 \textcolor{comment}{[cmd <COMMAND> [args <ARGUMENTS>]}
 permit nopass :doas
+\end{Verbatim}
+    \item \textbf{Change read permissions for doas config file:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{chmod} 0600 \textcolor{file}{/etd/doas.conf}
 \end{Verbatim}
 \end{enumerate}
 
@@ -776,6 +787,7 @@ permit nopass :doas
 
 
 \chapter{Local Settings}
+\label{local_settings}
 \section{Hostname}
 Valid hostname characters: \textbf{a-z}, \textbf{0-9} and hyphens (\textbf{-}), but not on start.
 \begin{enumerate}
@@ -1451,6 +1463,56 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] xorg xorg-drivers xorg-xinit
 \end{Verbatim}
+    \item \textbf{Start X on tty1:}
+\newline File (\textbf{\textcolor{file}{\~/.zshrc}}||\textbf{\textcolor{file}{\~/.bashrc}}):
+\begin{Verbatim}[commandchars=\\\{\}]
+...
+if [[ -z \$\{DISPLAY\} ]] && [[ \$(tty) = '/dev/tty1' ]]; then
+    source /etc/profile
+    startx
+fi
+...
+\end{Verbatim}
+\end{enumerate}
+\section{Brightness}
+\begin{enumerate}
+    \item \textbf{Install:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] light
+\end{Verbatim}
+    \item \textbf{Get current brightness:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{light} -G
+\end{Verbatim}
+    \item \textbf{Set minimum brightness:}
+    \begin{enumerate}
+        \item \textbf{See current minimum brightness:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{light} -P
+\end{Verbatim}
+        \item \textbf{Set minimum brightness}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{light} -N 1
+\end{Verbatim}
+    \end{enumerate}
+    \item \textbf{Set brightness:}
+    \begin{itemize}
+        \item \textbf{Specific value:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{light} -S <MIN-100>
+\end{Verbatim}
+        \item \textbf{Increase/decrease value:}
+        \begin{itemize}
+            \item \textbf{Increase:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{light} -A <0-100>
+\end{Verbatim}
+            \item \textbf{Decrease:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{light} -U <0-100>
+\end{Verbatim}
+        \end{itemize}
+    \end{itemize}
 \end{enumerate}
 
 
@@ -1583,8 +1645,8 @@ __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia %command%
 \end{enumerate}
 
 
-\chapter{Virtualization}
-\section{Theroy}
+\chapter{Virtualization @WIP}
+\section{Theory}
 \begin{figure}[ht]
     \begin{center}
         \includegraphics[width=120mm]{./src/img/virtualizations2.png}
@@ -1606,19 +1668,90 @@ __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia %command%
     \item \textbf{If virtualization is not supported, check if it is not disabled in BIOS/UEFI.}
 \end{enumerate}
 
-\section{KVM (T1 Hypervisor)}
+\section{KVM/QEMU (T1/T2 Hypervisor)}
+\begin{verbatim}
+        .----------------.  .----------------.
+        |                |  |                |
+        |      L2        |  |      L2        |
+        | (Nested Guest) |  | (Nested Guest) |
+        |                |  |                |
+        |----------------'--'----------------|
+        |                                    |
+        |       L1 (Guest Hypervisor)        |
+        |          KVM (/dev/kvm)            |
+        |                                    |
+.------------------------------------------------------.
+|                 L0 (Host Hypervisor)                 |
+|                    KVM (/dev/kvm)                    |
+|------------------------------------------------------|
+|        Hardware (with virtualization extensions)     |
+'------------------------------------------------------'
+\end{verbatim}
+\subsection{Installation}
 \begin{enumerate}
+    \item \textbf{Enable nested KVM:}
+    \begin{enumerate}
+        \item \textbf{Check if KVM module is loaded:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{lsmod} | \textcolor{command}{grep} -i kvm_intel
+\end{Verbatim}        
+        \item \textbf{Configure kvm module to allow nesting:}
+\newline File (\textbf{\textcolor{file}{/etc/modprobe.d/virtualization.conf}}):
+\begin{Verbatim}[commandchars=\\\{\}]
+options kvm-intel nested=y
+\end{Verbatim}
+        \item \textbf{Reload module:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{modprobe} -r kvm_intel
+\textcolor{root}{root#} \textcolor{command}{modprobe} kvm_intel
+\end{Verbatim}   
+        \item \textbf{Verify if nested is enabled (Y):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{user}{user\$} \textcolor{command}{cat} \textcolor{file}{/sys/module/kvm_intel/parameters/nested}
+\end{Verbatim}
+    \end{enumerate}
     \item \textbf{Install:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] 
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] qemu libvirt libvirt-dinit edk2-ovmf
+iptables-nft dnsmasq virt-manager virt-viewer
+\end{Verbatim}
+    \item \textbf{Do not start libvirtd on startup and now (if running):}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} disable libvirtd
+\textcolor{root}{root#} \textcolor{command}{dinitctl} stop libvirtd
+\end{Verbatim}
+    \item \textbf{Create directory for iso files:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{mkdir} \textcolor{dir}{/iso/}
 \end{Verbatim}
 \end{enumerate}
+\subsection{Start virtualizing:}
+\begin{enumerate}
+    \item \textbf{Start libvirt and virtlog daemons:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{dinitctl} start libvirtd
+\textcolor{root}{root#} \textcolor{command}{virtlogd} -d
+\end{Verbatim}
+    \item \textbf{Start (default) network:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{virsh} net-list --all
+\textcolor{root}{root#} \textcolor{command}{virsh} net-start <default>
+\end{Verbatim}
+    \item \textbf{Start libvirt GUI client:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{virt-manager}
+\end{Verbatim}
+\end{enumerate}
+\subsection{Libvirt files:}
+\begin{itemize}
+    \item \textbf{Images (qcow2):} \textbf{\textcolor{dir}{/var/lib/libvirt/images/}}
+\end{itemize}
 
-\section{Xen (T1 Hypervisor)}
+\section{Xen (T1 Hypervisor) @TODO}
 \begin{enumerate}
     \item \textbf{Install:}
 \begin{Verbatim}[commandchars=\\\{\}]
-\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] 
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed]
 \end{Verbatim}
 \end{enumerate}
 
@@ -1676,7 +1809,6 @@ nftables
 
 \chapter{ToDo}
 \begin{Verbatim}[commandchars=\\\{\}]
-Nvidia Optimus + backlight control
 bspwm
 polybar
 lockscreen
@@ -1699,7 +1831,16 @@ See archcraft apps and rice
 See debian getty program
 See QubesOS Xen solution
 test optimization Arch, Debian, Artix
-\end{Verbatim}     
+
+
+Rice:
+.zshrc = PS1
+rxvt-unicode = color scheme + Font
+bspwm + polybar + compton = desktop 9 Font
+lxappearance = gtk theme
+icons
+(rEFInd + CLI font)
+\end{Verbatim}
 
 
 
@@ -1787,8 +1928,9 @@ test optimization Arch, Debian, Artix
 \begin{itemize}
     \item \textbf{KVM:}
     \begin{itemize}
-        \item \textbf{Installation:} \url{https://wiki.archlinux.org/title/KVM}
         \item \textbf{Nested KVM guests:} \url{https://www.kernel.org/doc/html/v5.16-rc1/virt/kvm/running-nested-guests.html}
+        \item \textbf{Installation:} \url{https://wiki.archlinux.org/title/Libvirt}
+        \item \textbf{Default network manual config:} \url{https://jamielinux.com/docs/libvirt-networking-handbook/nat-based-network.html}
     \end{itemize}
     \item \textbf{Xen:}
     \begin{itemize}

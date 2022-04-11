@@ -1,8 +1,8 @@
 "" LOCATION:     ~/.vimrc
 "" AUTHOR:       AISK11
-"" VERSION:      1.0.2
+"" VERSION:      1.0.3
 "" CREATED:      2022-04-04
-"" UPDATED:      2022-04-07
+"" UPDATED:      2022-04-10
 "" DESCRIPTION:  Configuration file for vim text editor.
 "" DEPENDENCIES: vim
 
@@ -54,7 +54,7 @@ autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
 set laststatus=2
 
 "" Statusline.
-set statusline=%F\ %p%%\ [%l:%c]\ %M\ %R\ %Y\ %y
+set statusline=%F\ %p%%\ [%l:%c]\ %Y\ %M\ %R
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
