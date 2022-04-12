@@ -1,10 +1,34 @@
 ## LOCATION:     ~/.zshrc
 ## AUTHOR:       AISK11
-## VERSION:      1.2.0
+## VERSION:      1.2.1
 ## CREATED:      2022-04-04
 ## UPDATED:      2022-04-12
 ## DESCRIPTION:  Configuration file for shell zsh.
 ## DEPENDENCIES: zsh zsh-syntax-highlighting zsh-autosuggestions [zsh-completions]
+
+################################################################################
+##                           TTY FRAMEBUFFER COLORS                           ##
+################################################################################
+## e[P = set color; XRRGGBB, X = number of color in hex.
+if [[ "$TERM" = "linux" ]]; then
+    echo -en "\e]P0000000" #black
+	echo -en "\e]P18B0000" #darkred
+    echo -en "\e]P2008B00" #darkgreen
+    echo -en "\e]P38B8B00" #brown
+    echo -en "\e]P400008B" #darkblue
+    echo -en "\e]P58B008B" #darkmagenta
+    echo -en "\e]P6008B8B" #darkcyan
+    echo -en "\e]P7cfcfcf" #lightgrey
+    echo -en "\e]P88B8B8B" #darkgrey
+    echo -en "\e]P9FF0000" #red
+    echo -en "\e]PA00FF00" #green
+    echo -en "\e]PBFFFF00" #yellow
+    echo -en "\e]PC0000FF" #blue
+    echo -en "\e]PDFF00FF" #magenta
+    echo -en "\e]PE00FFFF" #cyan
+    echo -en "\e]PFFFFFFF" #white
+fi
+
 
 ################################################################################
 ##                                   CLEAR                                    ##
@@ -23,7 +47,8 @@ autoload -U colors && colors
 ################################################################################
 ##                               COMMAND PROMPT                               ##
 ################################################################################
-if [[ $(tty) == "/dev/pts"* ]]; then
+#if [[ $(tty) == "/dev/pts"* ]]; then
+if [[ "$TERM" != "linux" ]]; then
 	YELLOW="#f5cd7b"
 	RED="#ef2929"
 	BLUE="#548cff"

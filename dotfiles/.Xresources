@@ -1,6 +1,6 @@
 !! LOCATION:     ~/.Xresources
 !! AUTHOR:       AISK11
-!! VERSION:      1.0.2
+!! VERSION:      1.0.3
 !! CREATED:      2022-04-08
 !! UPDATED:      2022-04-12
 !! DESCRIPTION:  Configuration file for rxvt-unicode.
@@ -139,11 +139,11 @@ URxvt.color5:   #8B008B
 !URxvt.color6:   #008B8B
 URxvt.color6:   #008B8B
 
-!! Dark White:
+!! Dark White / Light Gray:
 !URxvt.color7:   #cfcfcf
 URxvt.color7:   #cfcfcf
 
-!! Light Black / Gray:
+!! Light Black / Dark Gray:
 !URxvt.color8:   #8B8B8B
 URxvt.color8:   #8B8B8B
 
