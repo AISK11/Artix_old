@@ -1,6 +1,6 @@
 ## LOCATION:     ~/.zshrc
 ## AUTHOR:       AISK11
-## VERSION:      1.2.2
+## VERSION:      1.2.3
 ## CREATED:      2022-04-04
 ## UPDATED:      2022-04-12
 ## DESCRIPTION:  Configuration file for shell zsh.
@@ -255,9 +255,10 @@ alias tree='tree -C'
 ## Aliases.
 alias mtr='mtr -t'
 alias nvrun='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia'
-alias mp3d='youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --output "%(title)s.%(ext)s" --no-playlist'
-alias flacd='youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format flac --audio-quality 0 --output "%(title)s.%(ext)s" --no-playlist'
-
+alias ydl_mp3_song='youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --output "%(title)s.%(ext)s" --no-playlist'
+alias ydl_mp3_playlist='youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --output "%(title)s.%(ext)s" --yes-playlist'
+alias ydl_flac_song='youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format flac --audio-quality 0 --output "%(title)s.%(ext)s" --no-playlist'
+alias ydl_flac_playlist='youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format flac --audio-quality 0 --output "%(title)s.%(ext)s" --yes-playlist'
 
 ########################################
 ##             FUNCTIONS              ##
@@ -280,6 +281,7 @@ flac_to_mp3()
 	echo "Converted to '${NO_EXT}.mp3'." ||
 	echo "ERROR!"
 }
+
 
 ################################################################################
 ##                                    XORG                                    ##
