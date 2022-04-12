@@ -1,8 +1,8 @@
 !! LOCATION:     ~/.Xresources
 !! AUTHOR:       AISK11
-!! VERSION:      1.0.1
+!! VERSION:      1.0.2
 !! CREATED:      2022-04-08
-!! UPDATED:      2022-04-08
+!! UPDATED:      2022-04-12
 !! DESCRIPTION:  Configuration file for rxvt-unicode.
 !! DEPENDENCIES: rxvt-unicode ttf-dejavu ttf-fira-mono
 
@@ -110,51 +110,67 @@ URxvt*foreground: White
 URxvt*highlightColor: White
 URxvt*highlightTextColor: Black
 
-!!! CUSTOM TERMINAL COLORS !!!
+!!! TERMINAL COLORS !!!
 !! Black:
+!URxvt.color0:   #000000
 URxvt.color0:   #000000
 
 !! Dark Red:
-URxvt.color1:   #BD2000
+!URxvt.color1:   #8B0000
+URxvt.color1:   #8B0000
 
 !! Dark Green:
-URxvt.color2:   #4E9A06
+!URxvt.color2:   #008B00
+URxvt.color2:   #008B00
 
 !! Dark Yellow:
-URxvt.color3:   #FB9846
+!URxvt.color3:   #8B8B00
+URxvt.color3:   #8B8B00
 
 !! Dark Blue:
-URxvt.color4:   #002FB0
+!URxvt.color4:   #00008B
+URxvt.color4:   #00008B
 
 !! Dark Purple:
-URxvt.color5:   #A300FF
+!URxvt.color5:   #8B008B
+URxvt.color5:   #8B008B
 
 !! Dark Cyan:
-URxvt.color6:   #00C1FF
+!URxvt.color6:   #008B8B
+URxvt.color6:   #008B8B
 
 !! Dark White:
-URxvt.color7:   #DEE2E6
+!URxvt.color7:   #cfcfcf
+URxvt.color7:   #cfcfcf
 
 !! Light Black / Gray:
-URxvt.color8:   #707070
+!URxvt.color8:   #8B8B8B
+URxvt.color8:   #8B8B8B
 
 !! Light Red:
-URxvt.color9:   #EF2929
+!URxvt.color9:   #FF0000
+URxvt.color9:   #FF0000
 
 !! Light Green:
+!URxvt.color10:  #00FF00
 URxvt.color10:  #00FF00
 
 !! Light Yellow:
-URxvt.color11:  #F5CD7B
+!URxvt.color11:  #FFFF00
+URxvt.color11:  #FFFF00
 
 !! Light Blue:
-URxvt.color12:  #548CFF
+!URxvt.color12:  #0000FF
+URxvt.color12:  #0000FF
 
 !! Light Purple:
-URxvt.color13:  #CB95EA
+!URxvt.color13:  #FF00FF
+URxvt.color13:  #FF00FF
 
 !! Light Cyan:
-URxvt.color14:  #00E0FF
+!URxvt.color14:  #00FFFF
+URxvt.color14:  #00FFFF
 
 !! Light White:
+!URxvt.color15:  #FFFFFF
 URxvt.color15:  #FFFFFF
