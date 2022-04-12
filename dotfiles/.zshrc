@@ -1,6 +1,6 @@
 ## LOCATION:     ~/.zshrc
 ## AUTHOR:       AISK11
-## VERSION:      1.2.1
+## VERSION:      1.2.2
 ## CREATED:      2022-04-04
 ## UPDATED:      2022-04-12
 ## DESCRIPTION:  Configuration file for shell zsh.
@@ -255,6 +255,9 @@ alias tree='tree -C'
 ## Aliases.
 alias mtr='mtr -t'
 alias nvrun='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia'
+alias mp3d='youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --output "%(title)s.%(ext)s" --no-playlist'
+alias flacd='youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format flac --audio-quality 0 --output "%(title)s.%(ext)s" --no-playlist'
+
 
 ########################################
 ##             FUNCTIONS              ##
@@ -266,6 +269,17 @@ mem()
     ps -eo rss,pid,euser,args --sort %mem | grep -i $@ | grep -v grep | awk '{printf $1/1024 "MB"; $1=""; print }'
 }
 
+flac_to_mp3()
+{
+	FILE="${1}"
+	[[ "${1}" =~ '\.flac$' ]] &&
+	NO_EXT=$(basename ${FILE} | rev | cut -d '.' -f 2- | rev)
+	echo "Converting '${1}'." &&
+	## https://stackoverflow.com/questions/26109837/convert-flac-to-mp3-with-ffmpeg-keeping-all-metadata
+	ffmpeg -i "${1}" -ab 320k -map_metadata 0 -id3v2_version 3 -loglevel quiet "${NO_EXT}.mp3" &&
+	echo "Converted to '${NO_EXT}.mp3'." ||
+	echo "ERROR!"
+}
 
 ################################################################################
 ##                                    XORG                                    ##
