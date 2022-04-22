@@ -1,32 +1,24 @@
 \documentclass[10pt, a4paper, onecolumn, oneside, titlepage, openany]{book}
 
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{titlesec} % chapter on line with text
-\usepackage{fancyhdr}
-\usepackage{hyperref}
+\usepackage[T1]{fontenc}    %% TeX text extended - most European characters
+\usepackage[utf8]{inputenc} %% UTF-8 support
+\usepackage{menukeys}       %% keyboads keys, menu + includes '\definecolor'
+
+\usepackage{hyperref}       %% URL and reference support
 \hypersetup{
     colorlinks=true,
-    linkcolor=blue, %\ref{}
-    filecolor=magenta, % \href{run:./file.txt}{File.txt}
-    urlcolor=cyan, % \href{http://www.overleaf.com}{Link}
-    pdftitle={Cisco CCNA}
+    linkcolor=blue,         %% \ref{}
+    filecolor=magenta,      %% \href{run:./file.txt}{File.txt}
+    urlcolor=cyan,          %% \href{http://www.overleaf.com}{Link}
     pdfpagemode=FullScreen,
-    }
-\usepackage{menukeys}
-\usepackage{fancyvrb}
+    pdftitle={Linux Artix}
+}
 
-% table formatting
-\setlength{\arrayrulewidth}{0.5mm} % border
-\setlength{\tabcolsep}{18pt} % space from border (X axis)
-\renewcommand{\arraystretch}{1.5} % space from border (Y axis)
-\usepackage[format=hang,font=small,labelfont=bf]{caption} % bold table caption
-
-% chapter formatting
+\usepackage{titlesec}       %% chapter formatting (N. CHAPTER-NAME)
 \renewcommand{\chaptername}{}
 \titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter.}{1em}{}
 
-% decorative lines:
+\usepackage{fancyhdr}       %% decorative lines
 \renewcommand{\headrulewidth}{2pt}
 \renewcommand{\footrulewidth}{2pt}
 \pagestyle{fancy}
@@ -39,20 +31,27 @@
     \cfoot{\thepage}
 }
 
-% verbatim formatting
-\definecolor{device}{RGB}{0, 100, 200}
-\definecolor{command}{RGB}{41, 182, 0}
-\definecolor{nocommand}{RGB}{222, 0, 0}
-\definecolor{showcommand}{RGB}{255, 80, 0}
-\definecolor{warncommand}{RGB}{255, 80, 0}
+%% table formatting
+\usepackage[format=hang,font=small,labelfont=bf]{caption} %% bold table caption
+\setlength{\arrayrulewidth}{0.5mm}                        %% border
+\setlength{\tabcolsep}{18pt}                              %% space from border (X axis)
+\renewcommand{\arraystretch}{1.5}                         %% space from border (Y axis)
+
+%% colors
+\definecolor{bg}{RGB}{240, 240, 240}
 \definecolor{root}{RGB}{222, 0, 0}
 \definecolor{user}{RGB}{0, 150, 0}
+\definecolor{command}{RGB}{41, 182, 0}
+\definecolor{block}{RGB}{255, 80, 0}
 \definecolor{dir}{RGB}{0, 100, 200}
 \definecolor{file}{RGB}{77, 187, 101}
-\definecolor{block}{RGB}{255, 80, 0}
 \definecolor{comment}{RGB}{0, 182, 182}
-\definecolor{background}{RGB}{240, 240, 240}
-\renewcommand{\FancyVerbFormatLine}[1]{\colorbox{background}{#1}}
+
+%% code formatting
+\usepackage{fancyvrb}
+\renewcommand{\FancyVerbFormatLine}[1]{\colorbox{bg}{#1}}
+
+
 
 
 \title{\textbf{Linux Artix}}
@@ -527,7 +526,7 @@ btrfs-progs
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{(chroot) root#} \textcolor{command}{truncate} -s 0 <\textcolor{file}{/swap}>
 \textcolor{root}{(chroot) root#} \textcolor{command}{chattr} +C <\textcolor{file}{/swap}>
-\textcolor{root}{(chroot) root#} \textcolor{command}{fallocate} -l 4G <\textcolor{file}{/swap}>
+\textcolor{root}{(chroot) root#} \textcolor{command}{fallocate} -l 2G <\textcolor{file}{/swap}>
 \textcolor{root}{(chroot) root#} \textcolor{command}{chmod} 0600 <\textcolor{file}{/swap}>
 \end{Verbatim}
     \item \textbf{Make SWAP:}
@@ -679,6 +678,7 @@ menuentry "Artix" \{
     \end{enumerate}
 \end{enumerate}
 
+
 \section{Root User}
 \begin{enumerate}
     \item \textbf{Set password for root user:}
@@ -750,7 +750,7 @@ permit nopass :doas
     \item \textbf{Create user with home directory:}
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} \textcolor{command}{useradd} -m <USER>
-\textcolor{root}{root#} \textcolor{command}{passwdd} <USER>
+\textcolor{root}{root#} \textcolor{command}{passwd} <USER>
 > <NEW_USER_PASSWORD>
 > <NEW_USER_PASSWORD (VERIFY)>
 \end{Verbatim}
@@ -783,6 +783,13 @@ permit nopass :doas
 \begin{Verbatim}[commandchars=\\\{\}]
 \textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] zip unzip
 \end{Verbatim}
+    \item \textbf{Multimedia:}
+    \begin{itemize}
+        \item \textbf{Music:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] mpv youtube-dl ffmpeg
+\end{Verbatim}        
+    \end{itemize}
 \end{itemize}
 
 
@@ -1457,6 +1464,15 @@ vulkan-intel lib32-vulkan-intel [intel-gpu-tools]
     \end{itemize}
 \end{enumerate}
 
+\section{Touchpad Drivers}
+\begin{enumerate}
+    \item \textbf{Uninstall synaptics driver:}
+\newline Explanation: causing middle button to be almost whole area bug.
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} \textcolor{command}{pacman} -Rns xf86-input-synaptics
+\end{Verbatim}    
+\end{enumerate}
+
 \section{Xorg}
 \begin{enumerate}
     \item \textbf{Install:}
@@ -1517,6 +1533,15 @@ fi
 
 
 \chapter{Window Manager @WIP}
+\section{Bspwm}
+\begin{enumerate}
+    \item \textbf{Install:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] bspwm
+\end{Verbatim}
+\end{enumerate}
+
+
 \section{I3}
 \begin{enumerate}
     \item \textbf{Install:}
@@ -1627,6 +1652,14 @@ fi
 
 
 \chapter{GUI Programs}
+\section{Atom}
+\begin{enumerate}
+    \item \textbf{Download dependencies:}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{root}{root#} [\textcolor{command}{yes} |] \textcolor{command}{pacman} -S [--needed] atom
+\end{Verbatim}
+\end{enumerate}
+
 \section{Steam}
 \begin{enumerate}
     \item \textbf{Install:}
@@ -1667,6 +1700,10 @@ __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia %command%
 \end{Verbatim}
     \item \textbf{If virtualization is not supported, check if it is not disabled in BIOS/UEFI.}
 \end{enumerate}
+
+\section{Virtualbox (T2 Hypervisor)}
+
+
 
 \section{KVM/QEMU (T1/T2 Hypervisor)}
 \begin{verbatim}
@@ -1809,6 +1846,7 @@ nftables
 
 \chapter{ToDo}
 \begin{Verbatim}[commandchars=\\\{\}]
+zsh parameter colors
 bspwm
 polybar
 lockscreen
@@ -1918,6 +1956,7 @@ icons
 \section{Useful}
 \begin{itemize}
     \item \textbf{Zsh documentation:} \url{https://zsh.sourceforge.io/Doc/}
+    \item \textbf{Zsh highlighting} \url{https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters.md}
     \item \textbf{Linux app list:} \url{https://wiki.archlinux.org/title/List_of_applications}
     \item \textbf{I3 config options:} \url{https://i3wm.org/docs/userguide.html}
     \item \textbf{Polybar:} \url{https://github.com/polybar/polybar/wiki/Configuration}
